@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import {useNavigate } from 'react-router-dom';
 
 export default function MediaCard(props) {
-  let{title,short_desc, date, takenImage} = props
+  let{title,short_desc, date,dateEnd, takenImage} = props
   const navigate = useNavigate();
   const styles = {
     border: '1px solid black', margin:50, padding:30}
@@ -37,7 +37,8 @@ export default function MediaCard(props) {
         </Typography>
         <Typography variant="body2" color="text.secondary">
           <br></br>
-          Date: {date}
+          <p>  Date Start: {date} </p><p> Date End: {dateEnd}</p>
+                                  
         </Typography>
       </CardContent>
       <CardActions>

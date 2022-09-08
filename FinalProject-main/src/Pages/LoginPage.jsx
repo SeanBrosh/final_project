@@ -77,7 +77,7 @@ export default function LoginPage() {
         {
         alert("Logged in Succesfully!")
         sessionStorage.clear()
-        sessionStorage.login = JSON.stringify(new User(result.User_ID, result.Email, result.User_Name,result.User_Rank, result.User_Image))
+        sessionStorage.login = JSON.stringify(new User(result.User_ID, result.Email, result.User_Name,result.User_Rank, result.User_Country, result.User_Image,))
         navigate('/');
         }
   

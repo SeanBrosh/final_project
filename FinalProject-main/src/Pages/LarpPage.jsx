@@ -14,11 +14,13 @@ export default function LarpPage() {
   const [isFavorited, setIsFavorited] = useState(null)
   const [favButton, setFavButton] = useState(null)
   const [larpContent, setLarpContent] = useState(null)
+  const [score, setScore] = useState(null)
   
 const apiUrl = 'http://proj9.ruppin-tech.co.il/api/getlarpinfo/'+larpChoice;
   
 const apiUrlAdd = 'http://proj9.ruppin-tech.co.il/api/addfavorite';
 const apiUrlRemove = 'http://proj9.ruppin-tech.co.il/api/deletefavorite';
+const apiUrlGet = 'http://proj9.ruppin-tech.co.il/api/postfavoriteofspecificcombo/'
 
 
 const addFavorites= () => {
@@ -57,6 +59,31 @@ const addFavorites= () => {
   
 }
 
+const getScore= (larpTitle) => {
+
+  const apiUrlScore = 'http://proj9.ruppin-tech.co.il/api/getcaculatedscorebylarptitle/'+larpTitle;
+  fetch(apiUrlScore, {
+    method: 'GET',
+    headers: new Headers({
+        'Content-type': 'application/json; charset=UTF-8',
+    })
+}).then(res => {
+    if (res.ok) {
+        let temp = res.json()
+
+        return temp
+    }
+    else {
+        return null;
+    }
+}).then((result) => {
+    setScore(result)
+}
+)
+}
+
+
+
 const delFavorites= () => {
   let userName = JSON.parse(sessionStorage.getItem('login')).name;
   let larpTitle = larpContent.Title
@@ -93,6 +120,8 @@ const delFavorites= () => {
   
 }
 
+
+
 useEffect(() => {
 
 
@@ -114,12 +143,12 @@ useEffect(() => {
   }).then((result) => {
       setLarpContent(result)
       let currentUser = JSON.parse(sessionStorage.getItem('login'));
-      if(currentUser === null)
+      getScore(result.Title)
+      if(currentUser === null || currentUser.name === result.User_Name)
       {
           return;
       }
       else{
-          const apiUrlGet = 'http://proj9.ruppin-tech.co.il/api/postfavoriteofspecificcombo/'
           const favoriteComboDetails = {
             User_Name: currentUser.name,
             Title: result.Title
@@ -162,7 +191,7 @@ const fillLarpContent =() => {
       navigate('/');
       return;
   }
-  return <LarpPageContent title={larpContent.Title} long_desc={larpContent.Long_Description} payment={larpContent.Payment} image={larpContent.Larp_Images} link={larpContent.Link} creator_name={larpContent.User_Name} date={larpContent.LarpDate} hasFood={larpContent.HasFood_Description} hasSleep={larpContent.HasSleep_Description} tags={larpContent.Tag_Description}/> 
+  return <LarpPageContent title={larpContent.Title} long_desc={larpContent.Long_Description} payment={larpContent.Payment} image={larpContent.Larp_Images} link={larpContent.Link} creator_name={larpContent.User_Name} date={larpContent.LarpDate} dateEnd={larpContent.LarpDateEnd} hasFood={larpContent.HasFood_Description} hasSleep={larpContent.HasSleep_Description} tags={larpContent.Tag_Description} country={larpContent.Country} location={larpContent.Location}  score={score}/> 
 
 
 }
@@ -179,7 +208,7 @@ const fillFavoriteButtonContent =() => {
 }
 useEffect(() => {
 
-  if (isFavorited == null) {
+  if (isFavorited == null ) {
     return;
 }
   if (isFavorited== true)

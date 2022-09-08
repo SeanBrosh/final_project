@@ -71,7 +71,7 @@ export default function AccountProfile() {
           if(favoriteList !== null)
           {
               let valid_title_list = favoriteList.map(favoriteList => favoriteList.Title)
-              let temp = larpsSearch.map((larps,index)=> {if (valid_title_list.includes(larps.Title)) return <MediaCard key={index} title={larps.Title} short_desc={larps.Short_Description} date={larps.LarpDate.slice(0,10)} takenImage={larps.Larp_Images}/> })
+              let temp = larpsSearch.map((larps,index)=> {if (valid_title_list.includes(larps.Title)) return <MediaCard key={index} title={larps.Title} short_desc={larps.Short_Description} date={larps.LarpDate.slice(0,10)} dateEnd={larps.LarpDateEnd.slice(0,10)} takenImage={larps.Larp_Images}/> })
               return temp
         
           }
@@ -87,7 +87,7 @@ export default function AccountProfile() {
     <PrimarySearchAppBar></PrimarySearchAppBar>
     <div style={styles}>
       <h1>Account Profile Page</h1>
-      <AccountProfileContent email={currentUser.email} name={currentUser.name} rank={currentUser.rank}image={currentUser.user_image}/><br></br>
+      <AccountProfileContent email={currentUser.email} name={currentUser.name} rank={currentUser.rank}image={currentUser.user_image} country={currentUser.country}/><br></br>
       {favoriteList=== null || favoriteList.length === 0 ?  "" :<h1>Favorite List:</h1>}
       {printFavorites()}
       </div>

@@ -49,12 +49,12 @@ export default function LarpPageSearch() {
 
         if (searchInput === null) {
 
-            let temp = larpsSearch.map((result, index) => <MediaCard key={index} title={result.Title} short_desc={result.Short_Description} takenImage={result.Larp_Images} date={result.LarpDate.slice(0,10) } />)
+            let temp = larpsSearch.map((result, index) => <MediaCard key={index} title={result.Title} short_desc={result.Short_Description} takenImage={result.Larp_Images} date={result.LarpDate.slice(0,10) } dateEnd={result.LarpDateEnd.slice(0,10)} />)
             return temp
 
         }
         else {
-            let temp = larpsSearch.map((result, index) => { if (result.Title.toLowerCase().includes(searchInput.toLowerCase())) return <MediaCard key={index} title={result.Title} short_desc={result.Short_Description} takenImage={result.Larp_Images} date={result.LarpDate.slice(0,10) } /> })
+            let temp = larpsSearch.map((result, index) => { if (result.Title.toLowerCase().includes(searchInput.toLowerCase())) return <MediaCard key={index} title={result.Title} short_desc={result.Short_Description} takenImage={result.Larp_Images} date={result.LarpDate.slice(0,10)}  dateEnd={result.LarpDateEnd.slice(0,10)}/> })
             return temp
         }
 

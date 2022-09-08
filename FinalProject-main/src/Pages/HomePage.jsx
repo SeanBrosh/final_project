@@ -59,15 +59,16 @@ const CarouselMaker =() => {
 }
 
 
-const ClosestLarpMaker =() => {
+const UpcomingLarpMaker =() => {
 
   if (toplarps == null) {
       return;
   }
 
-  let temp  =toplarps.slice(0, 4).map((toplarps,index)=> <MediaCard key={index} title={toplarps.Title} short_desc={toplarps.Short_Description} date={toplarps.LarpDate.slice(0,10)} takenImage={toplarps.Larp_Images}/> )
+  let temp  =toplarps.slice(0, 4).map((toplarps,index)=> <MediaCard key={index} title={toplarps.Title} short_desc={toplarps.Short_Description} date={toplarps.LarpDate.slice(0,10)} dateEnd={toplarps.LarpDateEnd.slice(0,10)} takenImage={toplarps.Larp_Images}/> )
   return temp
 
+  
 
 }
 
@@ -83,8 +84,8 @@ const ClosestLarpMaker =() => {
         <h1>Looking for Larp</h1>
         {CarouselMaker()}
         <br></br>
-        <h2>Closest larps!</h2>
-        {ClosestLarpMaker()}
+        <h2>Upcoming larps!</h2>
+        {UpcomingLarpMaker()}
         </div>
 
     </div>

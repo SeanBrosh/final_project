@@ -12,6 +12,7 @@ export default function LarpPage() {
   const navigate = useNavigate();
   const larpChoice = JSON.parse(localStorage.getItem('larpChoice'));
   const [isFavorited, setIsFavorited] = useState(null)
+  const [isCreator, setIsCreator] = useState(null)
   const [favButton, setFavButton] = useState(null)
   const [larpContent, setLarpContent] = useState(null)
   const [score, setScore] = useState(null)
@@ -142,13 +143,26 @@ useEffect(() => {
       }
   }).then((result) => {
       setLarpContent(result)
+      if(result === null)
+      {
+        return
+      }
       let currentUser = JSON.parse(sessionStorage.getItem('login'));
+      if(result !== null)
+      {
       getScore(result.Title)
-      if(currentUser === null || currentUser.name === result.User_Name)
+      }
+      if(currentUser === null )
       {
           return;
       }
+      else if (currentUser.name === result.User_Name)
+      {
+        setIsCreator(true)
+        return;
+      }
       else{
+        setIsCreator(false)
           const favoriteComboDetails = {
             User_Name: currentUser.name,
             Title: result.Title
@@ -191,22 +205,35 @@ const fillLarpContent =() => {
       navigate('/');
       return;
   }
-  return <LarpPageContent title={larpContent.Title} long_desc={larpContent.Long_Description} payment={larpContent.Payment} image={larpContent.Larp_Images} link={larpContent.Link} creator_name={larpContent.User_Name} date={larpContent.LarpDate} dateEnd={larpContent.LarpDateEnd} hasFood={larpContent.HasFood_Description} hasSleep={larpContent.HasSleep_Description} tags={larpContent.Tag_Description} country={larpContent.Country} location={larpContent.Location}  score={score}/> 
+  return <LarpPageContent title={larpContent.Title} long_desc={larpContent.Long_Description} payment={larpContent.Payment} image={larpContent.Larp_Images} link={larpContent.Link} creator_name={larpContent.User_Name} date={larpContent.LarpDate} dateEnd={larpContent.LarpDateEnd} hasFood={larpContent.HasFood_Description} hasSleep={larpContent.HasSleep_Description} tags={larpContent.Tag_Description} country={larpContent.Country} location={larpContent.Location} price={larpContent.Payment} score={score}/> 
 
 
 }
 
 const fillFavoriteButtonContent =() => {
 
-  if (isFavorited == null) {
+
+  if (isCreator == null) {
       return;
-  }
+  } // if the it cannot find a login at all - which means the creator is not right or wrong, it means there is no logged player ; hence, no button is needed fo favorite or edit.
 
   return favButton
 
+}
+
+
+const NavToLarpEdit =() => {
+
+  navigate('/larpchangepage');
 
 }
+
 useEffect(() => {
+  if (isCreator== true)
+  {
+    setFavButton(<Button style={{margin:30}} variant="contained" onClick={NavToLarpEdit}>Edit Larp</Button>)
+    return
+  }
 
   if (isFavorited == null ) {
     return;
@@ -219,8 +246,21 @@ useEffect(() => {
   else
   {
     setFavButton(<Button style={{margin:30}} variant="contained" onClick={addFavorites}>Add to Favorites!</Button>)
+    return
   }
 }, [isFavorited])
+
+
+useEffect(() => {
+  if (isCreator== true)
+  {
+    setFavButton(<Button style={{margin:30}} variant="contained" onClick={delFavorites}>Edit Larp</Button>)
+    return
+  }
+
+
+}, [isCreator])
+
 
 
 

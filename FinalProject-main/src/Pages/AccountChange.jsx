@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
+import FormControl from '@mui/material/FormControl';
 import User from '../Classes/User';
 import {useNavigate } from 'react-router-dom';
 import PrimarySearchAppBar from '../Tools/MenuAppBar';
@@ -16,19 +18,102 @@ const [pass, setPass] = useState(null);
 const [confirmPass, setConfirmPass] = useState(null)
 const [name, setName] = useState(currentUser.name);
 const [image, setImage] = useState(currentUser.user_image);
+const [country, setCountry] = useState(null);
+const [countriesFromDB, setCountriesFromDB] = useState(null);
+const [anonButton, setAnonButton] = useState(null)
 const navigate = useNavigate();
 const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@+[a-zA-Z0-9.-]+.[a-zA-Z]$');
 const validPassword = new RegExp('^(?=.*?[A-Za-z])(?=.*?[0-9]).{6,}$');
 const validName = new RegExp('^[a-zA-Z0-9._:$!%-].{3,20}$');
 const apiUrl = 'http://proj9.ruppin-tech.co.il/api/updateuser';
+const apiUrlGetCountries = 'http://proj9.ruppin-tech.co.il/api/getallcountries';
 
 const styles = {
     border: '1px solid black', margin:100 , padding:30 ,backgroundColor:"white"}
 
 
+    const btnSetAnonymous = () => {
+      setCountry('Anonymous')
+    }
+
+    const fillAnonymosButtonContent =() => {
+
+
+  
+      return anonButton
+    
+    
+    }
+  
+  
+    const fillCountryChoiceContent =() => {
+
+  
+  
+      return       <FormControl 
+  sx={{ minWidth: 300 }}>
+      <Autocomplete
+      style={{margin:30} }
+      disablePortal
+      id="combo-box-demo"
+      options={countriesFromDB}
+      value={country}
+      sx={{ width: 300 }}
+      onChange={(event, value) => setCountry(value)}
+      renderInput={(params) => <TextField  {...params} label="Country" />}
+    />
+    </FormControl>
+    
+    }
+  
+    
+  
+    useEffect(() => {
+
+      fetch(apiUrlGetCountries, {
+          method: 'GET',
+          headers: new Headers({
+              'Content-type': 'application/json; charset=UTF-8',
+          })
+      }).then(res => {
+          if (res.ok) {
+              let temp = res.json()
+    
+              return temp
+          }
+          else {
+              return null;
+          }
+      }).then((result) => {
+           setCountriesFromDB(result)
+      }
+      )
+    }, [])
+    
+  
+  
+    useEffect(() => {
+    
+  
+      if (country === 'Anonymous')
+      { 
+        setAnonButton(<div><Button style={{margin:30}} color="error" variant="contained" disabled >Marked as Anonymous</Button><br></br></div>)
+        return
+      }
+      else
+      {
+        setAnonButton(<div><Button style={{margin:30}} onClick={btnSetAnonymous} variant="contained" >Signed up as Anonymous</Button><br></br></div>)
+      }
+    }, [country])
+  
 
  const btnChangeInformation = () => {
      
+        if (email === null || name === null)
+        {
+          alert("Please do not leave any field empty (but password, which is optional.).")
+          return
+        }
         if (!validEmail.test(email))
         {
           alert("Please write the email in a proper email format.")
@@ -57,6 +142,7 @@ const styles = {
           Email: email,
           User_Password: pass === null ? null: bcrypt.hashSync(pass, 10),
           User_Rank : currentUser.rank,
+          User_Country :  country === null ? currentUser.country : country,
           User_Image : image
         };
         fetch(apiUrl, {
@@ -80,7 +166,7 @@ const styles = {
           }
           alert("User was successfully updated!")
           sessionStorage.clear()
-          sessionStorage.login = JSON.stringify(new User(currentUser.user_id,  name,email,currentUser.rank, image))
+          sessionStorage.login = JSON.stringify(new User(currentUser.user_id,  name,email,currentUser.rank,country === null ? currentUser.country : country ,image))
           navigate('/accountprofile')
       
         },
@@ -89,18 +175,25 @@ const styles = {
           });
 
       }
+
       
         return (
           <div style={{backgroundColor:"peachpuff"}}>
               <PrimarySearchAppBar></PrimarySearchAppBar>
               <div style={styles}>
               <h1>Change Your Account's Information</h1>
-              <h3>Please fill the fields you want to change - the other field shall remain the same.</h3>
-              <TextField style={{margin:10}} color='success' id="email-input" label="New Email" variant="standard" onChange={(e)=> setEmail(e.target.value)} type="email"/><br/>
-              <TextField style={{margin:10}} color='success' id="password-input" label="New Password" variant="standard" onChange={(e)=> setPass(e.target.value)} type="password"/><br/>
-              <TextField style={{margin:10}} color='success' id="confirm-password-input" label="Password Confirmation" variant="standard" onChange={(e)=> setConfirmPass(e.target.value)} type="password"/><br/>
-              <TextField style={{margin:10}} color='success' id="name-input" label="New Name" variant="standard" onChange={(e)=> setName(e.target.value)}/><br/>
-              <TextField style={{margin:10}} color='success' id="image-input" label="Image SRC" variant="standard" onChange={(e)=> setImage(e.target.value)}/><br/>
+              <TextField style={{margin:10}} value={email} color='success' id="email-input" helperText="New Email" variant="standard" onChange={(e)=> setEmail(e.target.value)} type="email"/><br/>
+              <h3>Please write the new password you wish to add. If the field will remain empty - the old password will remain.</h3>
+              <TextField style={{margin:10}} color='success' id="password-input" helperText="New Password" variant="standard" onChange={(e)=> setPass(e.target.value)} type="password"/><br/>
+              <TextField style={{margin:10}} color='success' id="confirm-password-input" helperText="Password Confirmation" variant="standard" onChange={(e)=> setConfirmPass(e.target.value)} type="password"/><br/>
+              <TextField style={{margin:10}} value={name} color='success' id="name-input" helperText="New Name" variant="standard" onChange={(e)=> setName(e.target.value)}/><br/>
+              <TextField style={{margin:10}} value={image} color='success' id="image-input" helperText="Image SRC" variant="standard" onChange={(e)=> setImage(e.target.value)}/><br/>
+              Should you desire to keep your current country - keep the field empty.
+              <br></br>
+              {fillCountryChoiceContent()}
+             <br></br>
+              Should you prefer to not have your country chosen - you can click on the Anonymous button instead!<br></br>
+              {fillAnonymosButtonContent()}
               <Button style={{margin:30}} variant="contained" onClick={btnChangeInformation}>Change Information</Button><br/>
               </div>
           </div>

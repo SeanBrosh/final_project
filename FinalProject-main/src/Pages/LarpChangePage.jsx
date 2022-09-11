@@ -14,6 +14,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 export default function LarpBuilderPage() {
+const larpChoice = JSON.parse(localStorage.getItem('larpChoice'));
+const [larpID, setLarpID] = useState(null);
+const [larpCountry, setLarpCountry] = useState(null);
 const [title, setTitle] = useState(null);
 const [short_desc, setShortDesc] = useState(null);
 const [long_desc, setLongDesc] = useState(null);
@@ -29,7 +32,8 @@ const [hasFood, setHasFood] = useState("");
 const [hasSleep, setHasSleep] = useState("");
 const [larpImage, setLarpImage] = useState("");
 const [creator_name, setCreatorName] = useState( JSON.parse(sessionStorage.getItem('login')).user_id);
-const apiUrl = 'http://proj9.ruppin-tech.co.il/api/addlarp';
+const apiUrl = 'http://proj9.ruppin-tech.co.il/api/updatelarp';
+const apiUrlInfo = 'http://proj9.ruppin-tech.co.il/api/getlarpinfo/'+larpChoice;
 const apiUrlGetCountries = 'http://proj9.ruppin-tech.co.il/api/getallcountries';
 const validTitle = new RegExp('^[a-zA-Z0-9א-ת._ :$!%,"()/-]{2,41}$');
 const validShortDesc = new RegExp('^[a-zA-Z0-9א-ת._ :$!%,()/"?-]{14,300}$');
@@ -63,6 +67,45 @@ const intputTakerHasFood = (event) => {
 const intputTakerHasSleep = (event) => {
   setHasSleep(event.target.value);
 }
+
+useEffect(() => {
+
+
+
+    fetch(apiUrlInfo, {
+        method: 'GET',
+        headers: new Headers({
+            'Content-type': 'application/json; charset=UTF-8',
+        })
+    }).then(res => {
+        if (res.ok) {
+            let temp = res.json()
+  
+            return temp
+        }
+        else {
+            return null;
+        }
+    }).then((result) => {
+        setLarpCountry(result.Country)
+        setTitle(result.Title)
+        setShortDesc(result.Short_Description)
+        setLongDesc(result.Long_Description)
+        setPayment(result.Payment)
+        setLink(result.Link)
+        setTags(result.Tag_Description)
+        setHasFood(result.HasFood_Description)
+        setHasSleep(result.HasSleep_Description)
+        setLocation(result.Location)
+        setDate(result.LarpDate)
+        setDateEnd(result.LarpDateEnd)
+        setLocation(result.Location)
+        setLarpImage(result.Larp_Images)
+        setLarpID(result.Larp_ID)
+
+    }
+    )
+  }, [])
 
 
 const fillCountryChoiceContent =() => {
@@ -111,7 +154,8 @@ useEffect(() => {
 
 
 const btnLarpCreator = () => {
-    if (title===null || short_desc===null || long_desc===null || link === null || date===null ||dateEnd===null|| payment===null || tags===""|| hasFood===""|| hasSleep==="" || country===null || location===null)
+
+    if (title===null || short_desc===null || long_desc===null || link === null || date===null ||dateEnd===null|| payment===null || tags===""|| hasFood===""|| hasSleep==="" ||  location===null)
     {
         alert("Please fill all the fields. Take note that the Larp Image field is optional.")
         return;
@@ -143,25 +187,30 @@ const btnLarpCreator = () => {
       return
     }
     var currentdate = new Date();
-    if (date.getFullYear() < currentdate.getFullYear() || date.getFullYear() == currentdate.getFullYear() && date.getMonth() < currentdate.getMonth() || date.getFullYear() == currentdate.getFullYear() && date.getMonth() == currentdate.getMonth() && date.getDate() <= currentdate.getDate()) 
+    var dateTransformer = new Date(date)
+    var endDateTransformer = new Date(dateEnd)
+    if (dateTransformer.getFullYear() < currentdate.getFullYear() || dateTransformer.getFullYear() == currentdate.getFullYear() && dateTransformer.getMonth() < currentdate.getMonth() || dateTransformer.getFullYear() == currentdate.getFullYear() && dateTransformer.getMonth() == currentdate.getMonth() && dateTransformer.getDate() <= currentdate.getDate()) 
         {
             alert("Bad Start date! You can only advert dates that are starting from tomorrow onwards.")
             return;
         }
-        if (dateEnd.getFullYear() < date.getFullYear() || dateEnd.getFullYear() == date.getFullYear() && dateEnd.getMonth() < date.getMonth() || dateEnd.getFullYear() == date.getFullYear() && dateEnd.getMonth() == date.getMonth() && dateEnd.getDate() < date.getDate()) 
+        if (endDateTransformer.getFullYear() < dateTransformer.getFullYear() || endDateTransformer.getFullYear() == dateTransformer.getFullYear() && endDateTransformer.getMonth() < dateTransformer.getMonth() || endDateTransformer.getFullYear() == dateTransformer.getFullYear() && endDateTransformer.getMonth() == dateTransformer.getMonth() && endDateTransformer.getDate() < dateTransformer.getDate()) 
         {
             alert("Bad End date! You can only advert dates that are starting from the starting date, onwards.")
             return;
         }
 
-    var formatedDate =(date.getMonth()+1).toString()+ "/" + date.getDate().toString() +"/"+ date.getFullYear().toString()
-    var formatedDateEnd =(dateEnd.getMonth()+1).toString()+ "/" + dateEnd.getDate().toString() +"/"+ dateEnd.getFullYear().toString()
-    
-    localStorage.setItem('larpChoice', JSON.stringify(title));
-
+    var formatedDate =(dateTransformer.getMonth()+1).toString()+ "/" + dateTransformer.getDate().toString() +"/"+ dateTransformer.getFullYear().toString()
+    var formatedDateEnd =(endDateTransformer.getMonth()+1).toString()+ "/" + endDateTransformer.getDate().toString() +"/"+ endDateTransformer.getFullYear().toString()
    
 
+   if (country === null)
+   {
+    setCountry(larpCountry)
+   }
+
   const larpCreationDetails = {
+    Larp_ID : larpID ,
     Title : title,
     Short_Description: short_desc,
     Long_Description: long_desc,
@@ -177,6 +226,7 @@ const btnLarpCreator = () => {
     Country : country,
     Location : location
   };
+  console.log(larpCreationDetails)
   fetch(apiUrl, {
     method: 'PUT',
     body: JSON.stringify(larpCreationDetails),
@@ -193,11 +243,12 @@ const btnLarpCreator = () => {
     }
   }).then((result) => {
     if (result == null) {
-      alert("The larp's title is already taken - please use a different title!")
+      alert("The larp's new title is already taken - please use a different title!")
       return;
 
     }
-    alert("Larp Created")
+    localStorage.setItem('larpChoice', JSON.stringify(title));
+    alert("Larp Updated!")
     navigate('/larppage')
     console.log("fetch POST= ", result);
   },
@@ -205,21 +256,24 @@ const btnLarpCreator = () => {
       console.log("err post=", error)
     });
 
+
+
   }
+ 
 
   return (
     <div style={{backgroundColor:"peachpuff"}}>
         <PrimarySearchAppBar></PrimarySearchAppBar>
         <div style={styles}>
-        <h1>Create Your Larp!</h1>
-        <TextField id="title-input" style={{margin:30 , width: 300}} onChange={(e)=> setTitle(e.target.value)} helperText="Please enter your Larp's Title"  label="Title"/><br></br>
+        <h1>Change the field you wish to change!</h1>
+        <TextField  value={title} id="title-input" style={{margin:30 , width: 300}} onChange={(e)=> setTitle(e.target.value)} helperText="Please enter your Larp's New Title"/><br></br>
 
-        <MultilineTextFields labelFill="Write down short description!" inputTaker={inputTakerShortDesc} ></MultilineTextFields><br></br>
+        <MultilineTextFields value={short_desc} helperText="Write down short description!" inputTaker={inputTakerShortDesc} ></MultilineTextFields><br></br>
 
-        <MultilineTextFields labelFill="Write down a longer description for the page itself!" inputTaker={inputTakerLongDesc} ></MultilineTextFields><br></br>
+        <MultilineTextFields value={long_desc} helperText="Write down a longer description for the page itself!" inputTaker={inputTakerLongDesc} ></MultilineTextFields><br></br>
 
-        <TextField id="link-input" style={{margin:30}} onChange={(e)=> setLink(e.target.value)} helperText="Please enter a link to your larp's facebook / website!" label="Link"/><br></br>
-        <TextField id="payment-input" style={{margin:30}} type="number" onChange={(e)=> setPayment(e.target.value)} helperText="Please enter the payment that is required to join the LARP." label="Payment"/><br></br>
+        <TextField id="link-input" value={link} style={{margin:30}} onChange={(e)=> setLink(e.target.value)} helperText="Please enter a link to your larp's facebook / website!" /><br></br>
+        <TextField id="payment-input" value={payment} style={{margin:30}} type="number" onChange={(e)=> setPayment(e.target.value)} helperText="Please enter the payment that is required to join the LARP." /><br></br>
         
         
         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -304,16 +358,16 @@ const btnLarpCreator = () => {
           <MenuItem value={"Paid Lodging"}>Paid Lodging</MenuItem>
           <MenuItem value={"No Lodging"}>No Lodging</MenuItem>
         </Select>
+        <br></br>If you'll leave the Country field empty - it'll auto-fill the country that the Larp is already belongs to.
       </FormControl> <br></br>
       {fillCountryChoiceContent()}
       <br></br>
-      <TextField id="location-input" style={{margin:30 , width: 300}} onChange={(e)=> setLocation(e.target.value)} helperText="Please enter your Larp's Location"  label="Location"/><br></br>
-
-    <TextField id="image-input" style={{margin:30 , width: 500}} onChange={(e)=> setLarpImage(e.target.value)} helperText="Please enter the SRC of the larp image you wish to add!" label="Larp Image"/><br></br>
+    <TextField value={location} id="location-input" style={{margin:30 , width: 300}} onChange={(e)=> setLocation(e.target.value)} helperText="Please enter your Larp's Location" /><br></br>
+    <TextField  value={larpImage} id="image-input" style={{margin:30 , width: 500}} onChange={(e)=> setLarpImage(e.target.value)} helperText="Please enter the SRC of the larp image you wish to add!" /><br></br>
 <br></br>
 
 <Button onClick={btnLarpCreator} style={{margin:30}} variant="contained">
-    Create the Larp
+    Update the Larp
 </Button>
 </div>
     </div>

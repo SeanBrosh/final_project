@@ -7,6 +7,7 @@ import AccountChange from './Pages/AccountChange';
 import AccountProfile from './Pages/AccountProfile';
 import LarpPageSearch from './Pages/LarpPageSearch';
 import LarpBuilderPage from './Pages/LarpBuilderPage';
+import LarpChangePage from './Pages/LarpChangePage';
 import LarpPage from './Pages/LarpPage';
 import AccountAdminManagement from './Pages/AccountAdminManagement';
 import LarpAdminManagement from './Pages/LarpAdminManagement';
@@ -27,6 +28,7 @@ function App() {
           <Route path="/accountprofile" element={<AccountProfile/>}/>
           <Route path="/registration" element={<RegistrationPage/>}/>
           <Route path="/larpbuilderpage" element={<LarpBuilderPage/>}/>
+          <Route path="/larpchangepage" element={<LarpChangePage/>}/>
           <Route path="/larppage" element={<LarpPage />}/>
           <Route path="/accountadminmanagement" element={<AccountAdminManagement />}/>
           <Route path="/larpadminmanagement" element={<LarpAdminManagement />}/>

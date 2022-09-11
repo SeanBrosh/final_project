@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
+import FormControl from '@mui/material/FormControl';
 import {useNavigate } from 'react-router-dom';
 import PrimarySearchAppBar from '../Tools/MenuAppBar';
 import bcrypt from 'bcryptjs';
@@ -11,11 +13,15 @@ export default function RegistrationPage() {
 
 
 const apiUrl = 'http://proj9.ruppin-tech.co.il/api/adduser';
+const apiUrlGetCountries = 'http://proj9.ruppin-tech.co.il/api/getallcountries';
 const [email, setEmail] = useState(null);
 const [pass, setPass] = useState(null);
 const [confirmPass, setConfirmPass] = useState(null)
 const [name, setName] = useState(null);
 const [image, setImage] = useState("");
+const [country, setCountry] = useState(null);
+const [countriesFromDB, setCountriesFromDB] = useState(null);
+const [anonButton, setAnonButton] = useState(null)
 const navigate = useNavigate();
 const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@+[a-zA-Z0-9.-]+.[a-zA-Z]$');
 const validPassword = new RegExp('^(?=.*?[A-Za-z])(?=.*?[0-9]).{5,}$');
@@ -25,8 +31,84 @@ const validName = new RegExp('^[a-zA-Z0-9._:$!%-].{2,20}$');
 const styles = {
   border: '1px solid black', margin:100 , padding:30,backgroundColor:"white"}
 
+  const btnSetAnonymous = () => {
+    setCountry('Anonymous')
+  }
+
+  const fillAnonymosButtonContent =() => {
+
+
+  
+    return anonButton
+  
+  
+  }
+
+
+  const fillCountryChoiceContent =() => {
+
+
+  
+
+
+    return       <FormControl 
+ sx={{ minWidth: 300 }}>
+    <Autocomplete
+    style={{margin:30} }
+    disablePortal
+    id="combo-box-demo"
+    options={countriesFromDB}
+    sx={{ width: 300 }}
+    value={country}
+    onChange={(event, value) => setCountry(value)}
+    renderInput={(params) => <TextField  {...params} label="Country" />}
+  />
+  </FormControl>
+  }
+
+  
+
+  useEffect(() => {
+
+
+    fetch(apiUrlGetCountries, {
+        method: 'GET',
+        headers: new Headers({
+            'Content-type': 'application/json; charset=UTF-8',
+        })
+    }).then(res => {
+        if (res.ok) {
+            let temp = res.json()
+  
+            return temp
+        }
+        else {
+            return null;
+        }
+    }).then((result) => {
+         setCountriesFromDB(result)
+    }
+    )
+  }, [])
+  
+
+
+  useEffect(() => {
+  
+
+    if (country === 'Anonymous')
+    { 
+      setAnonButton(<div><Button style={{margin:30}} color="error" variant="contained" disabled >Marked as Anonymous</Button><br></br></div>)
+      return
+    }
+    else
+    {
+      setAnonButton(<div><Button style={{margin:30}} onClick={btnSetAnonymous} variant="contained" >Signed up as Anonymous</Button><br></br></div>)
+    }
+  }, [country])
+
 const btnAddUser = () => {
-  if (email === null || pass === null || confirmPass=== null|| name === null)
+  if (email === null || pass === null || confirmPass=== null|| name === null || country === null)
   {
     alert("Please fill all the fields but image - which is optional.")
     return
@@ -59,6 +141,7 @@ const btnAddUser = () => {
     User_Name : name,
     Email: email,
     User_Password: hashedPassword,
+    User_Country : country,
     User_Image : image
   };
   fetch(apiUrl, {
@@ -90,6 +173,8 @@ const btnAddUser = () => {
 
 }
 
+
+
   return (
     <div style={{backgroundColor:"peachpuff"}}>
         <PrimarySearchAppBar></PrimarySearchAppBar>
@@ -100,6 +185,10 @@ const btnAddUser = () => {
         <TextField style={{margin:10}} color='success' id="confirm-password-input" label="Password Confirmation" variant="standard" onChange={(e)=> setConfirmPass(e.target.value)} type="password"/><br/>
         <TextField style={{margin:10}} color='success' id="name-input" label="Name" variant="standard" onChange={(e)=> setName(e.target.value)}/><br/>
         <TextField style={{margin:10}} color='success' id="image-input" label="Image SRC" variant="standard" onChange={(e)=> setImage(e.target.value)}/><br/>
+        {fillCountryChoiceContent()}
+        <br></br>
+        Should you prefer to not have your country chosen - you can click on the Anonymous button instead!<br></br>
+        {fillAnonymosButtonContent()}
         <Button style={{margin:30}} variant="contained" onClick={btnAddUser}>Register</Button><br/>
         </div>
     </div>

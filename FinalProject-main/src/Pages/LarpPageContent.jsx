@@ -1,11 +1,10 @@
 import React from 'react';
-import Button from '@mui/material/Button';
 
 
 
 
 export default function LarpPageContent(props) {
-    let{title,long_desc,link,date,creator_name,image,hasFood,hasSleep,tags, dateEnd, country,location,score} = props
+    let{title,long_desc,link,date,creator_name,image,hasFood,hasSleep,tags, dateEnd, country,location,score, price} = props
   return (
       
     <div> 
@@ -17,6 +16,7 @@ export default function LarpPageContent(props) {
     <p>Lodging: {hasSleep}</p>
     <p>Food: {hasFood}</p>
     <p>Larp Theme: {tags}</p>
+    <p>Price of participation: {price}</p>
     <p>Date of Event: {date.slice(0,10)}</p>
     <p>The Event ends at the Date: {dateEnd.slice(0,10)}</p>
     <p>The Larp's location is in {location}, in {country}.</p>

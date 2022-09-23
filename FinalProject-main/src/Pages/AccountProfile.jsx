@@ -12,6 +12,7 @@ export default function AccountProfile() {
     
         const [larpsSearch, setLarpsSearch] = useState([]);
         const [favoriteList, setFavoriteList] = useState(null);
+        const [areCreatedLarps, setAreCreatedLarps] = useState(false);
         const currentUser = JSON.parse(sessionStorage.getItem('login'));
         const apiUrlAllLarps = 'http://proj9.ruppin-tech.co.il/api/getlarpinfoall';
         const apiUrlRelevantFavorites = 'http://proj9.ruppin-tech.co.il/api/getfavoriteinfobyusername/' + currentUser.name;
@@ -60,6 +61,13 @@ export default function AccountProfile() {
               }
           }).then((result) => {
               setLarpsSearch(result)
+              for(let i = 0; i < result.length; i++)
+              {
+                if(result[i].User_Name === currentUser.name)
+                {
+                  setAreCreatedLarps(true)
+                }
+              }
           }
           )
         }, [])
@@ -80,6 +88,24 @@ export default function AccountProfile() {
         
         
         }
+
+        const printCreatedLarps =() => {
+        
+        
+
+              let temp = larpsSearch.map((larps,index)=> {if (larps.User_Name === currentUser.name) return <MediaCard key={index} title={larps.Title} short_desc={larps.Short_Description} date={larps.LarpDate.slice(0,10)} dateEnd={larps.LarpDateEnd.slice(0,10)} takenImage={larps.Larp_Images}/> })
+              if (temp.length > 0)
+              {
+              
+              return temp
+              }
+        
+
+          return ""
+        
+        
+        
+        }
         
 
   return (
@@ -90,6 +116,8 @@ export default function AccountProfile() {
       <AccountProfileContent email={currentUser.email} name={currentUser.name} rank={currentUser.rank}image={currentUser.user_image} country={currentUser.country}/><br></br>
       {favoriteList=== null || favoriteList.length === 0 ?  "" :<h1>Favorite List:</h1>}
       {printFavorites()}
+     {areCreatedLarps === false ?  "" :<h1>Created Larp List:</h1> }
+      {printCreatedLarps()}
       </div>
   </div>
   )

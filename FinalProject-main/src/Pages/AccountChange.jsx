@@ -18,7 +18,7 @@ const [pass, setPass] = useState(null);
 const [confirmPass, setConfirmPass] = useState(null)
 const [name, setName] = useState(currentUser.name);
 const [image, setImage] = useState(currentUser.user_image);
-const [country, setCountry] = useState(null);
+const [country, setCountry] = useState(currentUser.country);
 const [countriesFromDB, setCountriesFromDB] = useState(null);
 const [anonButton, setAnonButton] = useState(null)
 const navigate = useNavigate();
@@ -56,7 +56,7 @@ const styles = {
       style={{margin:30} }
       disablePortal
       id="combo-box-demo"
-      options={countriesFromDB}
+      options={countriesFromDB ||[]}
       value={country}
       sx={{ width: 300 }}
       onChange={(event, value) => setCountry(value)}

@@ -123,6 +123,8 @@ export default function AccountAdminManagementContent(props) {
       </FormControl> <br></br>
       <Button style={{margin:30}}  variant="contained" onClick={btnChangeRank}>Change Rank</Button><br/>
         <br></br>
+        <Button style={{margin:30}}  variant="contained" >Edit User Information</Button><br/>
+        <br></br>
         <br></br>
     </div>
   )

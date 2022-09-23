@@ -3,6 +3,11 @@ import PrimarySearchAppBar from '../Tools/MenuAppBar';
 import LarpPageContent from './LarpPageContent';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 
 export default function LarpPage() {
 
@@ -12,10 +17,13 @@ export default function LarpPage() {
   const navigate = useNavigate();
   const larpChoice = JSON.parse(localStorage.getItem('larpChoice'));
   const [isFavorited, setIsFavorited] = useState(null)
+  const [isScoredBefore, setIsScoredBefore] = useState(false)
   const [isCreator, setIsCreator] = useState(null)
+  const [isLogged, setIsLogged] = useState(JSON.parse(sessionStorage.getItem('login')))
   const [favButton, setFavButton] = useState(null)
   const [larpContent, setLarpContent] = useState(null)
   const [score, setScore] = useState(null)
+  const [currentUserScore, setCurrentUserScore] = useState(null)
   
 const apiUrl = 'http://proj9.ruppin-tech.co.il/api/getlarpinfo/'+larpChoice;
   
@@ -23,9 +31,13 @@ const apiUrlAdd = 'http://proj9.ruppin-tech.co.il/api/addfavorite';
 const apiUrlRemove = 'http://proj9.ruppin-tech.co.il/api/deletefavorite';
 const apiUrlGet = 'http://proj9.ruppin-tech.co.il/api/postfavoriteofspecificcombo/'
 
+const apiUrlScoreGet = 'http://proj9.ruppin-tech.co.il/api/getscoreofspecificcombo'
+const apiUrlScoreAdd = 'http://proj9.ruppin-tech.co.il/api/addscore'
+const apiUrlScoreUpdate = 'http://proj9.ruppin-tech.co.il/api/updatescore'
+
 
 const addFavorites= () => {
-  let userName = JSON.parse(sessionStorage.getItem('login')).name;
+  let userName = isLogged.name;
   let larpTitle = larpContent.Title
   ;
   const favoretAddDetails = {
@@ -126,7 +138,7 @@ const delFavorites= () => {
 useEffect(() => {
 
 
-
+  
   fetch(apiUrl, {
       method: 'GET',
       headers: new Headers({
@@ -199,6 +211,43 @@ useEffect(() => {
 }, [])
 
 
+useEffect(() => {
+  if(isLogged != null)
+  {
+  const scoreComboDetails = {
+    User_Name: isLogged.name,
+    Title: larpChoice
+  };
+  fetch(apiUrlScoreGet, {
+    method: 'POST',
+    body: JSON.stringify(scoreComboDetails),
+    headers: new Headers({
+      'Content-type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json; charset=UTF-8'
+    })
+  }).then(res => {
+    if (res.ok) {
+      return res.json()
+    }
+    else {
+      return null;
+    }
+  }).then((result) => {
+    if (result == null) {
+      return;
+    }
+    setIsScoredBefore(true)
+    setCurrentUserScore(result)
+    
+  },
+    (error) => {
+      console.log("err post=", error)
+    });
+  }
+}, [])
+
+
+
 const fillLarpContent =() => {
 
   if (larpContent == null) {
@@ -210,16 +259,82 @@ const fillLarpContent =() => {
 
 }
 
-const fillFavoriteButtonContent =() => {
+const SaveNewScore =() => {
+  if(currentUserScore === null)
+  {
+    alert("Please choose a score before saving it!")
+    return;
+  }
 
-
-  if (isCreator == null) {
+if (isScoredBefore === false)
+{
+  const scoreAddNew = {
+    Title : larpChoice,
+    User_Name: isLogged.name,
+    Larp_Score : currentUserScore
+  };
+  fetch(apiUrlScoreAdd, {
+    method: 'PUT',
+    body: JSON.stringify(scoreAddNew),
+    headers: new Headers({
+      'Content-type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json; charset=UTF-8'
+    })
+  }).then(res => {
+    if (res.ok) {
+      return res.json()
+    }
+    else {
+      return null;
+    }
+  }).then((result) => {
+    if (result == null) {
+      alert("There was an error while adding the score.")
       return;
-  } // if the it cannot find a login at all - which means the creator is not right or wrong, it means there is no logged player ; hence, no button is needed fo favorite or edit.
-
-  return favButton
+    }
+    alert("The Larp's score was successfully added!")
+  },
+    (error) => {
+      console.log("err post=", error)
+    });
+}
+else
+{
+  const scoreUpdate = {
+    Title : larpChoice,
+    User_Name: isLogged.name,
+    Larp_Score : currentUserScore
+  };
+  fetch(apiUrlScoreUpdate, {
+    method: 'PUT',
+    body: JSON.stringify(scoreUpdate),
+    headers: new Headers({
+      'Content-type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json; charset=UTF-8'
+    })
+  }).then(res => {
+    if (res.ok) {
+      return res.json()
+    }
+    else {
+      return null;
+    }
+  }).then((result) => {
+    if (result == null) {
+      alert("There was an error while updating the score.")
+      return;
+    }
+    alert("The Larp's score was successfully updated!")
+  },
+    (error) => {
+      console.log("err post=", error)
+    });
+}
 
 }
+
+
+
 
 
 const NavToLarpEdit =() => {
@@ -228,47 +343,39 @@ const NavToLarpEdit =() => {
 
 }
 
-useEffect(() => {
-  if (isCreator== true)
-  {
-    setFavButton(<Button style={{margin:30}} variant="contained" onClick={NavToLarpEdit}>Edit Larp</Button>)
-    return
-  }
-
-  if (isFavorited == null ) {
-    return;
+const intputTakerScore = (event) => {
+  setCurrentUserScore(event.target.value);
 }
-  if (isFavorited== true)
-  {
-    setFavButton(<Button style={{margin:30}} color="error" variant="contained" onClick={delFavorites}>Remove from Favorites!</Button>)
-    return
-  }
-  else
-  {
-    setFavButton(<Button style={{margin:30}} variant="contained" onClick={addFavorites}>Add to Favorites!</Button>)
-    return
-  }
-}, [isFavorited])
-
-
-useEffect(() => {
-  if (isCreator== true)
-  {
-    setFavButton(<Button style={{margin:30}} variant="contained" onClick={delFavorites}>Edit Larp</Button>)
-    return
-  }
-
-
-}, [isCreator])
-
-
 
 
   return (
     <div style={{backgroundColor:"peachpuff"}}>    <PrimarySearchAppBar></PrimarySearchAppBar>
     <div style={styles}>
     {fillLarpContent()}<br></br>
-    {fillFavoriteButtonContent()}
+    {!isCreator && <div><FormControl style={{margin:30}}
+      display="flex"
+  justifyContent="center"
+  alignItems="center"  sx={{ minWidth: 100 }}>
+        <InputLabel id="demo-simple-select-label"></InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={currentUserScore}
+          onChange={intputTakerScore}
+          
+        >
+          <MenuItem value={"1"}>1</MenuItem>
+          <MenuItem value={"2"}>2</MenuItem>
+          <MenuItem value={"3"}>3</MenuItem>
+          <MenuItem value={"4"}>4</MenuItem>
+          <MenuItem value={"5"}>5</MenuItem>
+        </Select>
+        <FormHelperText>Rate the Larp!</FormHelperText>
+      </FormControl> <br></br></div>}
+    {!isCreator && <div><Button style={{margin:30}} variant="contained" onClick={SaveNewScore}>Save the Score!</Button></div>}
+    {isCreator && !isFavorited && <Button style={{margin:30}} variant="contained" onClick={NavToLarpEdit}>Edit Larp</Button>}
+    {!isCreator && isFavorited == true && <Button style={{margin:30}} color="error" variant="contained" onClick={delFavorites}>Remove from Favorites!</Button>}
+    {!isCreator && isFavorited == false && <Button style={{margin:30}} variant="contained" onClick={addFavorites}>Add to Favorites!</Button>}
     </div>
     </div>
   )

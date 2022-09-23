@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import {useNavigate } from 'react-router-dom';
 
 export default function MediaCard(props) {
-  let{title,short_desc, date,dateEnd, takenImage} = props
+  let{title,short_desc, date,dateEnd,hasSleep,hasFood,price,tags, country, takenImage} = props
   const navigate = useNavigate();
   const styles = {
     border: '1px solid black', margin:50, padding:30}

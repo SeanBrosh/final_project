@@ -22,9 +22,14 @@ export default function MenuAppBar() {
     session = true;
   }
   let adminUser = false;
-  if (sessionUser !== null && sessionUser.rank == "Admin")
+  let larpCreatorPlus = false;
+  if (sessionUser !== null && sessionUser.rank == "Moderator" || sessionUser !== null && sessionUser.rank == "Admin")
   {
     adminUser= true;
+  }
+  if (sessionUser !== null && sessionUser.rank == "Moderator" || sessionUser !== null && sessionUser.rank == "Admin" || sessionUser !== null && sessionUser.rank == "Larp Creator")
+  {
+    larpCreatorPlus= true;
   }
   
 
@@ -106,7 +111,7 @@ export default function MenuAppBar() {
           </Typography>
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <CustomizedInputBase/>
+          <CustomizedInputBase tags={null} hasFood={null} hasSleep={null} paymentStartingRng={null} paymentEndingRng={null} dateStart={null} dateEnd={null} country={null}/>
           </Typography>
           {adminUser &&
           <IconButton onClick={handleAdminUserMover}
@@ -134,7 +139,7 @@ export default function MenuAppBar() {
         </Typography>
         </IconButton>
           }
-          {session &&
+          {larpCreatorPlus &&
           <IconButton onClick={handleLarpCreatorMover}
           size="large"
           edge="start"

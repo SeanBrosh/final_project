@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PrimarySearchAppBar from '../Tools/MenuAppBar';
+import AdvancedSearchBar from '../Tools/AdvancedSearchBar';
 import Carousel from 'react-material-ui-carousel'
 import CarouselItem from '../Tools/CarouselItem';
 import MediaCard from '../Tools/MediaCard';
@@ -83,6 +84,8 @@ const UpcomingLarpMaker =() => {
       <div style={styles} className="">
         <h1>Looking for Larp</h1>
         {CarouselMaker()}
+        <br></br>
+       <AdvancedSearchBar></AdvancedSearchBar>
         <br></br>
         <h2>Upcoming larps!</h2>
         {UpcomingLarpMaker()}

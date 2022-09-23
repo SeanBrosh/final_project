@@ -3,8 +3,8 @@ import PrimarySearchAppBar from '../Tools/MenuAppBar';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MultilineTextFields from '../Tools/MultilineTextFields';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DatePicker from '@mui/lab/DatePicker';
 import {useNavigate } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -68,6 +68,25 @@ const intputTakerHasSleep = (event) => {
   setHasSleep(event.target.value);
 }
 
+const resetData = () =>{
+  setCountry(null)
+  setTitle(null)
+  setShortDesc(null)
+  setLongDesc(null)
+  setPayment(null)
+  setLink(null)
+  setTags(null)
+  setHasFood(null)
+  setHasSleep(null)
+  setLocation(null)
+  setDate(null)
+  setDateEnd(null)
+  setLocation(null)
+  setLarpImage(null)
+  setLarpID(null)
+  setCountriesFromDB(null)
+}
+
 useEffect(() => {
 
 
@@ -87,7 +106,7 @@ useEffect(() => {
             return null;
         }
     }).then((result) => {
-        setLarpCountry(result.Country)
+        setCountry(result.Country)
         setTitle(result.Title)
         setShortDesc(result.Short_Description)
         setLongDesc(result.Long_Description)
@@ -103,8 +122,10 @@ useEffect(() => {
         setLarpImage(result.Larp_Images)
         setLarpID(result.Larp_ID)
 
+    })
+    return ()=>{
+      resetData()
     }
-    )
   }, [])
 
 
@@ -120,9 +141,9 @@ sx={{ minWidth: 300 }}>
   style={{margin:30} }
   disablePortal
   id="combo-box-demo"
-  options={countriesFromDB}
+  options={countriesFromDB||[]}
   sx={{ width: 300 }}
-  value={country}
+  value={country===null||country===undefined?"Israel": country}
   onChange={(event, value) => setCountry(value)}
   renderInput={(params) => <TextField  {...params} label="Country" />}
 />
@@ -150,6 +171,9 @@ useEffect(() => {
        setCountriesFromDB(result)
   }
   )
+  return ()=>{
+    resetData()
+  }
 }, [])
 
 

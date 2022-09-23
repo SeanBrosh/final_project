@@ -45,6 +45,8 @@ export default function LarpAdminManagementContent(props) {
      
   return (
     <div style={styles}><MediaCard title={larpSingle.Title} short_desc={larpSingle.Short_Description} takenImage={larpSingle.Larp_Images} date={larpSingle.LarpDate.slice(0,10)} dateEnd={larpSingle.LarpDateEnd.slice(0,10)}/> 
-    <Button style={{margin:30}} color="error" variant="contained" onClick={btnDeleteUser}>Delete</Button><br/></div>
+    <Button style={{margin:30}} color="error" variant="contained" onClick={btnDeleteUser}>Delete</Button><br/>
+    <Button style={{margin:30}} variant="contained"> Edit Larp Information</Button><br/>
+    </div>
   )
 }

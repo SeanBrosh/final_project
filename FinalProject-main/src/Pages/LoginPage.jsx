@@ -21,6 +21,11 @@ export default function LoginPage() {
 
 
   const btnLogin = () => {
+    if(email === null || pass === null)
+    {
+      alert("Please fill both the email and password fields in order to log in!")
+      return
+    }
 
     const userEmailHashCheck = {
       Email: email

@@ -16,6 +16,7 @@ export default function LarpPage() {
   
   const navigate = useNavigate();
   const larpChoice = JSON.parse(localStorage.getItem('larpChoice'));
+  const [larpChoiceId, setLarpChoiceId] = useState(null)
   const [isFavorited, setIsFavorited] = useState(null)
   const [isScoredBefore, setIsScoredBefore] = useState(false)
   const [isCreator, setIsCreator] = useState(null)
@@ -37,12 +38,12 @@ const apiUrlScoreUpdate = 'http://proj9.ruppin-tech.co.il/api/updatescore'
 
 
 const addFavorites= () => {
-  let userName = isLogged.name;
-  let larpTitle = larpContent.Title
+  let userName = isLogged.user_id;
+  let larpTitle = larpContent.Larp_ID
   ;
   const favoretAddDetails = {
-    Title : larpTitle,
-    User_Name: userName,
+    Larp_ID : larpTitle,
+    User_ID: userName,
   };
   fetch(apiUrlAdd, {
     method: 'PUT',
@@ -72,9 +73,9 @@ const addFavorites= () => {
   
 }
 
-const getScore= (larpTitle) => {
+const getScore= (Larp_ID) => {
 
-  const apiUrlScore = 'http://proj9.ruppin-tech.co.il/api/getcaculatedscorebylarptitle/'+larpTitle;
+  const apiUrlScore = 'http://proj9.ruppin-tech.co.il/api/getcaculatedscorebylarpID/'+Larp_ID;
   fetch(apiUrlScore, {
     method: 'GET',
     headers: new Headers({
@@ -98,12 +99,12 @@ const getScore= (larpTitle) => {
 
 
 const delFavorites= () => {
-  let userName = JSON.parse(sessionStorage.getItem('login')).name;
-  let larpTitle = larpContent.Title
+  let userName = JSON.parse(sessionStorage.getItem('login')).user_id;
+  let larpTitle = larpContent.Larp_ID
   ;
   const favoretRemoveDetails = {
-    Title : larpTitle,
-    User_Name: userName,
+    Larp_ID : larpTitle,
+    User_ID: userName
   };
   fetch(apiUrlRemove, {
     method: 'DELETE',
@@ -155,6 +156,7 @@ useEffect(() => {
       }
   }).then((result) => {
       setLarpContent(result)
+      setLarpChoiceId(result.Larp_ID)
       if(result === null)
       {
         return
@@ -162,7 +164,7 @@ useEffect(() => {
       let currentUser = JSON.parse(sessionStorage.getItem('login'));
       if(result !== null)
       {
-      getScore(result.Title)
+      getScore(result.Larp_ID)
       }
       if(currentUser === null )
       {
@@ -176,8 +178,8 @@ useEffect(() => {
       else{
         setIsCreator(false)
           const favoriteComboDetails = {
-            User_Name: currentUser.name,
-            Title: result.Title
+            User_ID: currentUser.user_id,
+            Larp_ID: result.Larp_ID
           };
           fetch(apiUrlGet, {
             method: 'POST',
@@ -212,11 +214,12 @@ useEffect(() => {
 
 
 useEffect(() => {
+  
   if(isLogged != null)
   {
   const scoreComboDetails = {
-    User_Name: isLogged.name,
-    Title: larpChoice
+    Larp_ID : larpChoiceId,
+    User_ID: isLogged.user_id,
   };
   fetch(apiUrlScoreGet, {
     method: 'POST',
@@ -236,15 +239,15 @@ useEffect(() => {
     if (result == null) {
       return;
     }
+    
     setIsScoredBefore(true)
     setCurrentUserScore(result)
-    
   },
     (error) => {
       console.log("err post=", error)
     });
   }
-}, [])
+}, [larpChoiceId])
 
 
 
@@ -269,8 +272,8 @@ const SaveNewScore =() => {
 if (isScoredBefore === false)
 {
   const scoreAddNew = {
-    Title : larpChoice,
-    User_Name: isLogged.name,
+    Larp_ID : larpChoiceId,
+    User_ID: isLogged.user_id,
     Larp_Score : currentUserScore
   };
   fetch(apiUrlScoreAdd, {
@@ -293,6 +296,7 @@ if (isScoredBefore === false)
       return;
     }
     alert("The Larp's score was successfully added!")
+    setIsScoredBefore(true)
   },
     (error) => {
       console.log("err post=", error)
@@ -301,8 +305,8 @@ if (isScoredBefore === false)
 else
 {
   const scoreUpdate = {
-    Title : larpChoice,
-    User_Name: isLogged.name,
+    Larp_ID : larpChoiceId,
+    User_ID: isLogged.user_id,
     Larp_Score : currentUserScore
   };
   fetch(apiUrlScoreUpdate, {
@@ -352,7 +356,7 @@ const intputTakerScore = (event) => {
     <div style={{backgroundColor:"peachpuff"}}>    <PrimarySearchAppBar></PrimarySearchAppBar>
     <div style={styles}>
     {fillLarpContent()}<br></br>
-    {!isCreator && <div><FormControl style={{margin:30}}
+    {!isCreator && isLogged!= null &&<div><FormControl style={{margin:30}}
       display="flex"
   justifyContent="center"
   alignItems="center"  sx={{ minWidth: 100 }}>
@@ -372,7 +376,7 @@ const intputTakerScore = (event) => {
         </Select>
         <FormHelperText>Rate the Larp!</FormHelperText>
       </FormControl> <br></br></div>}
-    {!isCreator && <div><Button style={{margin:30}} variant="contained" onClick={SaveNewScore}>Save the Score!</Button></div>}
+    {!isCreator && isLogged!= null &&<div><Button style={{margin:30}} variant="contained" onClick={SaveNewScore}>Save the Score!</Button></div>}
     {isCreator && !isFavorited && <Button style={{margin:30}} variant="contained" onClick={NavToLarpEdit}>Edit Larp</Button>}
     {!isCreator && isFavorited == true && <Button style={{margin:30}} color="error" variant="contained" onClick={delFavorites}>Remove from Favorites!</Button>}
     {!isCreator && isFavorited == false && <Button style={{margin:30}} variant="contained" onClick={addFavorites}>Add to Favorites!</Button>}

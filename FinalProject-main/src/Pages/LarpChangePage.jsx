@@ -31,7 +31,8 @@ const [tags, setTags] = useState("");
 const [hasFood, setHasFood] = useState("");
 const [hasSleep, setHasSleep] = useState("");
 const [larpImage, setLarpImage] = useState("");
-const [creator_name, setCreatorName] = useState( JSON.parse(sessionStorage.getItem('login')).user_id);
+const [creator_name, setCreatorName] = useState("");
+const [creator_id, setCreatorID] = useState("");
 const apiUrl = 'http://proj9.ruppin-tech.co.il/api/updatelarp';
 const apiUrlInfo = 'http://proj9.ruppin-tech.co.il/api/getlarpinfo/'+larpChoice;
 const apiUrlGetCountries = 'http://proj9.ruppin-tech.co.il/api/getallcountries';
@@ -121,6 +122,26 @@ useEffect(() => {
         setLocation(result.Location)
         setLarpImage(result.Larp_Images)
         setLarpID(result.Larp_ID)
+        setCreatorName(result.User_Name)
+
+        const apiUrlCreatorInfo = 'http://proj9.ruppin-tech.co.il/api/getlarpinfo/'+creator_name;
+        fetch(apiUrlCreatorInfo, {
+          method: 'GET',
+          headers: new Headers({
+              'Content-type': 'application/json; charset=UTF-8',
+          })
+      }).then(res => {
+          if (res.ok) {
+              let temp = res.json()
+    
+              return temp
+          }
+          else {
+              return null;
+          }
+      }).then((result) => {
+          setCreatorID(result.User_ID)
+      })
 
     })
     return ()=>{
@@ -241,7 +262,7 @@ const btnLarpCreator = () => {
     Payment: payment,
     Link : link,
     Larp_Images : larpImage,
-    Creator_Name_ID : creator_name,
+    Creator_Name_ID : creator_id,
     Tag_Description : tags,
     HasSleep_Description:hasSleep,
     HasFood_Description: hasFood,
@@ -273,7 +294,7 @@ const btnLarpCreator = () => {
     }
     localStorage.setItem('larpChoice', JSON.stringify(title));
     alert("Larp Updated!")
-    navigate('/larppage')
+    navigate('/larppage');
     console.log("fetch POST= ", result);
   },
     (error) => {

@@ -4,11 +4,13 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import {useNavigate } from 'react-router-dom';
 
 export default function AccountAdminManagementContent(props) {
     let{email,name,rank,id} = props
 
-    const [ranks, setRanks] = useState(null);
+    const [ranks, setRanks] = useState(rank);
+    const navigate = useNavigate();
     const styles = {
         border: '1px solid black', margin:50 , padding:30}
         const apiUrlDelete = 'http://proj9.ruppin-tech.co.il/api/deleteuser';
@@ -92,6 +94,11 @@ export default function AccountAdminManagementContent(props) {
     
       }
 
+    const NavToUserChange = () => {
+      localStorage.setItem('userChoice', JSON.stringify(name)); 
+      navigate('/accountchange')
+    }
+
     return (
     <div style={styles}> 
         User Name : {name}<br></br>
@@ -123,7 +130,7 @@ export default function AccountAdminManagementContent(props) {
       </FormControl> <br></br>
       <Button style={{margin:30}}  variant="contained" onClick={btnChangeRank}>Change Rank</Button><br/>
         <br></br>
-        <Button style={{margin:30}}  variant="contained" >Edit User Information</Button><br/>
+        <Button style={{margin:30}}  variant="contained" onClick={NavToUserChange}>Edit User Information</Button><br/>
         <br></br>
         <br></br>
     </div>

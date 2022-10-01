@@ -12,11 +12,14 @@ import bcrypt from 'bcryptjs';
 
 export default function AccountChange() {
 
+const adminUserChanger = JSON.parse(localStorage.getItem('userChoice'));
 const currentUser = JSON.parse(sessionStorage.getItem('login'));
+const [id, setID] = useState(currentUser.user_id);
 const [email, setEmail] = useState(currentUser.email);
 const [pass, setPass] = useState(null);
 const [confirmPass, setConfirmPass] = useState(null)
 const [name, setName] = useState(currentUser.name);
+const [rank, setRank] = useState(currentUser.rank);
 const [image, setImage] = useState(currentUser.user_image);
 const [country, setCountry] = useState(currentUser.country);
 const [countriesFromDB, setCountriesFromDB] = useState(null);
@@ -70,6 +73,34 @@ const styles = {
   
     useEffect(() => {
 
+      if(adminUserChanger !== null)
+      {
+        const apiChosenUserInformation = "http://proj9.ruppin-tech.co.il/api/getuserinfo/"+ adminUserChanger
+        fetch(apiChosenUserInformation, {
+          method: 'GET',
+          headers: new Headers({
+              'Content-type': 'application/json; charset=UTF-8',
+          })
+      }).then(res => {
+          if (res.ok) {
+              let temp = res.json()
+    
+              return temp
+          }
+          else {
+              return null;
+          }
+      }).then((result) => {
+           setID(result.User_ID)
+           setName(result.User_Name)
+           setEmail(result.Email)
+           setRank(result.User_Rank)
+           setCountry(result.User_Country)
+           setImage(result.User_Image)
+      }
+      )
+      }
+
       fetch(apiUrlGetCountries, {
           method: 'GET',
           headers: new Headers({
@@ -88,6 +119,8 @@ const styles = {
            setCountriesFromDB(result)
       }
       )
+
+
     }, [])
     
   
@@ -137,12 +170,12 @@ const styles = {
           return
         }
         const userUpdate = {
-          User_ID: currentUser.user_id,
+          User_ID: id,
           User_Name : name,
           Email: email,
           User_Password: pass === null ? null: bcrypt.hashSync(pass, 10),
-          User_Rank : currentUser.rank,
-          User_Country :  country === null ? currentUser.country : country,
+          User_Rank : rank,
+          User_Country :  country ,
           User_Image : image
         };
         fetch(apiUrl, {
@@ -165,9 +198,16 @@ const styles = {
             return;
           }
           alert("User was successfully updated!")
+          if(adminUserChanger===null)
+          {
           sessionStorage.clear()
           sessionStorage.login = JSON.stringify(new User(currentUser.user_id,  name,email,currentUser.rank,country === null ? currentUser.country : country ,image))
           navigate('/accountprofile')
+          }
+          else
+          {
+            navigate('/accountadminmanagement')
+          }
       
         },
           (error) => {

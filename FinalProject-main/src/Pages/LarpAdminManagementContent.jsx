@@ -1,13 +1,15 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import MediaCard from '../Tools/MediaCard';
+import {useNavigate } from 'react-router-dom';
 
 export default function LarpAdminManagementContent(props) {
     let{larpSingle} = props
     const apiUrl = 'http://proj9.ruppin-tech.co.il/api/deletelarp';
     const styles = {
         border: '1px solid black', margin:50 , padding:30}
-
+    const navigate = useNavigate();
+      
     const btnDeleteUser = () => {
       const larpDeleteDetails = {
         Larp_ID: larpSingle.Larp_ID,
@@ -40,13 +42,20 @@ export default function LarpAdminManagementContent(props) {
   
   
     }
+
+    const NavToLarpEdit =() => {
+      localStorage.setItem('larpChoice', JSON.stringify(larpSingle.Title));
+      navigate('/larpchangepage');
+    
+    }
+    
   
 
      
   return (
     <div style={styles}><MediaCard title={larpSingle.Title} short_desc={larpSingle.Short_Description} takenImage={larpSingle.Larp_Images} date={larpSingle.LarpDate.slice(0,10)} dateEnd={larpSingle.LarpDateEnd.slice(0,10)}/> 
     <Button style={{margin:30}} color="error" variant="contained" onClick={btnDeleteUser}>Delete</Button><br/>
-    <Button style={{margin:30}} variant="contained"> Edit Larp Information</Button><br/>
+    <Button style={{margin:30}} variant="contained" onClick={NavToLarpEdit}> Edit Larp Information</Button><br/>
     </div>
   )
 }

@@ -10,11 +10,13 @@ import Menu from '@mui/material/Menu';
 import {useNavigate } from 'react-router-dom';
 import CustomizedInputBase from './CustomizedInputBase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Link, useLocation } from 'react-router-dom';
 
 
 export default function MenuAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   let sessionUser = JSON.parse(sessionStorage.getItem('login'));
   let session = false;
@@ -45,8 +47,16 @@ export default function MenuAppBar() {
 
   const handleLogOutButton =() => {
     sessionStorage.clear()
+    if(location.pathname === '/') //checks if we're already on that page.
+    {
+      window.location.reload(false);
+      setAnchorEl(null);
+    }
+    else
+    {
     navigate('/')
     setAnchorEl(null);
+    }
   }
 
   const handleAccountProfileMover=() =>{
@@ -55,8 +65,17 @@ export default function MenuAppBar() {
   };
 
   const handleAccountChangeMover=() =>{
+    localStorage.removeItem('userChoice') //handles the issue if you want to move from another user's account change details - to your own; hence the refresh.
+    if(location.pathname === '/accountchange') //checks if we're already on that page.
+    {
+      window.location.reload(false);
+      setAnchorEl(null);
+    }
+    else
+    {
     navigate('/accountchange')
     setAnchorEl(null);
+    }
   };
 
   const handleLarpCreatorMover=() =>{

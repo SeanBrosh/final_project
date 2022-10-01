@@ -3,8 +3,6 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import DatePicker from '@mui/lab/DatePicker';
 import LarpSearchParameters from '../Classes/LarpSearchParameters';
 import {useNavigate } from 'react-router-dom';
 

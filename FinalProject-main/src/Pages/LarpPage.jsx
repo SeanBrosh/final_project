@@ -26,7 +26,7 @@ export default function LarpPage() {
   const [score, setScore] = useState(null)
   const [currentUserScore, setCurrentUserScore] = useState(null)
   
-const apiUrl = 'http://proj9.ruppin-tech.co.il/api/getlarpinfo/'+larpChoice;
+const apiUrlGetLarp = 'http://proj9.ruppin-tech.co.il/api/getlarpinfo/'+larpChoice;
   
 const apiUrlAdd = 'http://proj9.ruppin-tech.co.il/api/addfavorite';
 const apiUrlRemove = 'http://proj9.ruppin-tech.co.il/api/deletefavorite';
@@ -140,7 +140,7 @@ useEffect(() => {
 
 
   
-  fetch(apiUrl, {
+  fetch(apiUrlGetLarp, {
       method: 'GET',
       headers: new Headers({
           'Content-type': 'application/json; charset=UTF-8',
@@ -152,6 +152,7 @@ useEffect(() => {
           return temp
       }
       else {
+        window.location.reload(false);
           return null;
       }
   }).then((result) => {
@@ -214,8 +215,8 @@ useEffect(() => {
 
 
 useEffect(() => {
-  
-  if(isLogged != null)
+
+  if( isLogged != null)
   {
   const scoreComboDetails = {
     Larp_ID : larpChoiceId,

@@ -4,7 +4,7 @@ import {useNavigate } from 'react-router-dom';
 
 
 export default function CarouselItem(props) {
-    let{title,  short_desc} = props
+    let{title,  short_desc,score} = props
     const navigate = useNavigate();
     const navBtnClicker=() =>{
         localStorage.setItem('larpChoice', JSON.stringify(title));
@@ -14,8 +14,9 @@ export default function CarouselItem(props) {
     return (
         <Paper>
 
-            <h2>{title}</h2>
+            <h3>{title}</h3>
             <p>{short_desc}</p>
+            <p>{score === null? "" :<div>Community Score: {score}</div> }</p>
             <Button onClick={navBtnClicker} className="CheckButton">
                 Check it out!
             </Button>

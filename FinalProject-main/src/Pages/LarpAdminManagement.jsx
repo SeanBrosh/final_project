@@ -2,15 +2,133 @@ import React, { useEffect, useState } from 'react';
 import PrimarySearchAppBar from '../Tools/MenuAppBar';
 import LarpAdminManagementContent from './LarpAdminManagementContent';
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import { PieChart , pieChartDefaultProps} from 'react-minimal-pie-chart';
 
 
 
 export default function LarpAdminManagement() {
 const navigate = useNavigate();
 const apiUrl = 'http://proj9.ruppin-tech.co.il/api/getlarpinfoall';
+const [chartFiller, setChartFiller] = useState(null);
 const [larpsSearch, setLarpsSearch] = useState([]);
     const styles = {
         border: '1px solid black', margin:100 , padding:30 ,backgroundColor:"white"}
+
+
+        
+        const btnShowLodgingPieChart = () => {
+            if(larpsSearch === null)
+            {
+                return <div>There are no Larps in the DB!</div>
+            }
+
+
+            let noLodgeFromLarp = larpsSearch.filter(item => item.HasSleep_Description === 'No Lodging');
+            let noLodgingCount = noLodgeFromLarp.length
+            let freeLodgeFromLarp = larpsSearch.filter(item => item.HasSleep_Description === 'Free Lodging');
+            let freeLodgingCount = freeLodgeFromLarp.length
+            let paidLodgeFromLarp = larpsSearch.filter(item => item.HasSleep_Description === 'Paid Lodging');
+            let paidLodgingCount = paidLodgeFromLarp.length
+            let filler = <div><PieChart     
+            label={(props) => { return props.dataEntry.title +"\n"+ props.dataEntry.percentage + "%";}}
+            labelStyle={{
+                fontSize: '1.5px',
+                fontFamily: 'sans-serif',
+              }}
+            radius={20}
+            animate={true}
+            data={[
+              { title: 'No Lodging', value: noLodgingCount, color: '#E38627' },
+              { title: 'Free Lodging', value: freeLodgingCount, color: '#C13C37' },
+              { title: 'Paid Lodging', value: paidLodgingCount, color: '#6A2135' },
+            ]}
+          /></div>;
+
+            setChartFiller(filler)
+
+        }
+
+
+        const btnShowLarpThemePieChart = () => {
+            if(larpsSearch === null)
+            {
+                return <div>There are no Larps in the DB!</div>
+            }
+
+
+            let tagSciFiFromLarp = larpsSearch.filter(item => item.Tag_Description === 'Sci-Fi');
+            let tagSciFiCount = tagSciFiFromLarp.length
+            let tagPostApocalypticFromLarp = larpsSearch.filter(item => item.Tag_Description === 'Post-Apocalyptic');
+            let tagPostApocalypticCount = tagPostApocalypticFromLarp.length
+            let tagFantasyFromLarp = larpsSearch.filter(item => item.Tag_Description === 'Fantasy');
+            let tagFantasyCount = tagFantasyFromLarp.length
+            let tagPoliticalFromLarp = larpsSearch.filter(item => item.Tag_Description === 'Political');
+            let tagPoliticalCount = tagPoliticalFromLarp.length
+            let tagMilitantFromLarp = larpsSearch.filter(item => item.Tag_Description === 'Militant');
+            let tagMilitantCount = tagMilitantFromLarp.length
+
+            let filler = <div><PieChart     
+            label={(props) => { return props.dataEntry.title +"\n"+ props.dataEntry.percentage + "%";}}
+            labelStyle={{
+                fontSize: '1.5px',
+                fontFamily: 'sans-serif',
+              }}
+            radius={20}
+            animate={true}
+            data={[
+              { title: 'Sci-Fi', value: tagSciFiCount, color: '#E38627' },
+              { title: 'Post-Apocalyptic', value: tagPostApocalypticCount, color: '#C13C37' },
+              { title: 'Fantasy', value: tagFantasyCount, color: '#6565bf' },
+              { title: 'Political', value: tagPoliticalCount, color: '#6efdfd' },
+              { title: 'Militant', value: tagMilitantCount, color: '#6A2135' },
+            ]}
+          /></div>;
+
+            setChartFiller(filler)
+
+        }
+
+
+        const btnShowFoodPieChart = () => {
+            if(larpsSearch === null)
+            {
+                return <div>There are no Larps in the DB!</div>
+            }
+
+
+            let noFoodFromLarp = larpsSearch.filter(item => item.HasFood_Description === 'No Food');
+            let noFoodCount = noFoodFromLarp.length
+            let freeFoodFromLarp = larpsSearch.filter(item => item.HasFood_Description === 'Free Food');
+            let freeFoodCount = freeFoodFromLarp.length
+            let paidFoodFromLarp = larpsSearch.filter(item => item.HasFood_Description === 'Paid Food');
+            let paidFoodCount = paidFoodFromLarp.length
+            let filler = <div><PieChart     
+            label={(props) => { return props.dataEntry.title +"\n"+ props.dataEntry.percentage + "%";}}
+            labelStyle={{
+                fontSize: '1.5px',
+                fontFamily: 'sans-serif',
+              }}
+            radius={20}
+            animate={true}
+            data={[
+              { title: 'No Food', value: noFoodCount, color: '#E38627' },
+              { title: 'Free Food', value: freeFoodCount, color: '#C13C37' },
+              { title: 'Paid Food', value: paidFoodCount, color: '#6A2135' },
+            ]}
+          /></div>;
+
+            setChartFiller(filler)
+
+        }
+
+        const btnShowLarpCommonPriceHistogram = () => {
+
+
+
+            
+            setChartFiller(null)
+        }
 
     useEffect(() => {
 
@@ -58,6 +176,13 @@ const [larpsSearch, setLarpsSearch] = useState([]);
     <div style={{backgroundColor:"peachpuff"}}><PrimarySearchAppBar></PrimarySearchAppBar>
     <div style={styles}>
         <h1>Larp Management</h1>
+        <h2>Graphs of the Larps</h2>    
+    <Button style={{margin:30}} variant="contained" onClick={btnShowLodgingPieChart} >Most Common Lodging Option</Button>
+    <Button style={{margin:30}} variant="contained" onClick={btnShowFoodPieChart}>Most Common Food Option</Button>
+    <Button style={{margin:30}} variant="contained" onClick={btnShowLarpThemePieChart}>Most Common Larp Theme</Button>
+    <Button style={{margin:30}} variant="contained" onClick={btnShowLarpCommonPriceHistogram} >how most common price ranges Histogram</Button>
+    {chartFiller === null? "" : chartFiller}
+    <h2>Managing the different Larps</h2>   
         {addLarps()}
         </div>
     </div>

@@ -1,0 +1,44 @@
+.advance-search-organizer{display: flex; justify-content: center;}
+.advance-search-organizer-two{display: flex; justify-content: center;}
+.advance-search-organizer-three{display: flex; justify-content: center;}
+.background-color-for-all{background-color: rgb(99, 49, 4);}
+
+
+
+.container {
+    position: relative;
+  }
+  
+  .text-block {
+    position: absolute;
+    width: 97.5%;
+    bottom: 3px;
+    background-color: black;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 150px;
+    opacity: 0.8;
+  }
+
+  .text-specific{
+    opacity: 1;
+  }
+
+  .font-loader {
+    font-family: 'Cairo';
+  }
+
+  .larp-details{
+    font-family: 'Alfa Slab One';
+  }
+
+  .upcoming-larps-title{
+    font-family: 'DM Serif Display';
+    font-size: 50px;
+    font-weight: bolder;
+  }
+
+  .child {
+    display: inline-block;
+  }

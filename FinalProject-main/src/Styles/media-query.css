@@ -1,0 +1,41 @@
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .advance-search-organizer{display: flex; justify-content:center ;flex-direction: column; }
+    .advance-search-organizer-two{display: flex; justify-content: center; flex-direction: column;}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .advance-search-organizer{display: flex; justify-content:center ;flex-direction: column; }
+    .advance-search-organizer-two{display: flex; justify-content: center; flex-direction: column;}
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .advance-search-organizer{display: flex; justify-content:center ;flex-direction: column; }
+    .advance-search-organizer-two{display: flex; justify-content: center; flex-direction: column;}
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 1040px) {
+
+    .advance-search-organizer{display: flex; justify-content:center ;flex-direction: column; }
+    .advance-search-organizer-two{display: flex; justify-content: center; flex-direction: row;}
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1740px) {
+
+.advance-search-organizer{display: flex; justify-content:center ;flex-direction: column;}
+.advance-search-organizer-two{display: flex; justify-content: center; flex-direction: row;}
+
+}    
+
+/* Extra Extra large devices (larger laptops and desktops, 1500px and up) */
+@media only screen and (min-width: 1800px) {
+
+    .advance-search-organizer{display: flex; justify-content:center ;flex-direction: row;}
+    
+    }    

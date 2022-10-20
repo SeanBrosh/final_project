@@ -3,6 +3,8 @@ import PrimarySearchAppBar from '../Tools/MenuAppBar';
 import AccountAdminManagementContent from './AccountAdminManagementContent';
 import { useNavigate } from 'react-router-dom';
 
+import '../Styles/global.css';
+
 
 
 export default function AccountAdminManagement() {
@@ -56,7 +58,7 @@ export default function AccountAdminManagement() {
 
   return (
       
-    <div style={{backgroundColor:"peachpuff"}}><PrimarySearchAppBar></PrimarySearchAppBar>
+    <div className="background-color-for-all"><PrimarySearchAppBar></PrimarySearchAppBar>
     <div style={styles}>
         <h1>User Management</h1>
         {userTableMaker()}

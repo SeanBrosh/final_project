@@ -9,6 +9,9 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 
+import '../Styles/global.css';
+
+
 export default function LarpPage() {
 
   const styles = {
@@ -354,7 +357,7 @@ const intputTakerScore = (event) => {
 
 
   return (
-    <div style={{backgroundColor:"peachpuff"}}>    <PrimarySearchAppBar></PrimarySearchAppBar>
+    <div className="background-color-for-all">    <PrimarySearchAppBar></PrimarySearchAppBar>
     <div style={styles}>
     {fillLarpContent()}<br></br>
     {!isCreator && isLogged!= null &&<div><FormControl style={{margin:30}}

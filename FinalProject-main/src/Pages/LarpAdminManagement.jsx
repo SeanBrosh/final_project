@@ -4,7 +4,9 @@ import LarpAdminManagementContent from './LarpAdminManagementContent';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { PieChart , pieChartDefaultProps} from 'react-minimal-pie-chart';
+import Histogram from 'react-chart-histogram';
 
+import '../Styles/global.css';
 
 
 export default function LarpAdminManagement() {
@@ -124,10 +126,27 @@ const [larpsSearch, setLarpsSearch] = useState([]);
 
         const btnShowLarpCommonPriceHistogram = () => {
 
-
-
+          let underTen = larpsSearch.filter(item => item.Payment <10);
+          let underFifteen = larpsSearch.filter(item => item.Payment >= 10 && item.Payment < 15);
+          let underTwenty = larpsSearch.filter(item => item.Payment >= 15 && item.Payment < 20);
+          let underTwentyFive = larpsSearch.filter(item => item.Payment >= 20 && item.Payment < 25);
+          let underThirty = larpsSearch.filter(item => item.Payment >= 25 && item.Payment < 30);
+          let underThiryFive = larpsSearch.filter(item => item.Payment >= 30 && item.Payment < 35);
+          let underForty = larpsSearch.filter(item => item.Payment >= 35 && item.Payment < 40);
+          let aboveForty = larpsSearch.filter(item => item.Payment >= 40);
+          const data = [underTen.length,underFifteen.length,underTwenty.length,underTwentyFive.length,underThirty.length,underThiryFive.length,underForty.length,aboveForty.length];//counting array
+          const price_range=["10-","10-14","15-19","20-24","25-29","30-34","35-39","40+"] 
+          const options = { fillColor: '#FFFFFF', strokeColor: '#0000FF' };
             
-            setChartFiller(null)
+            setChartFiller(    <div>
+              <Histogram
+                  xLabels={price_range}
+                  yValues={data}
+                  width='500'
+                  height='500'
+                  options={options}
+              />
+            </div>)
         }
 
     useEffect(() => {
@@ -173,7 +192,7 @@ const [larpsSearch, setLarpsSearch] = useState([]);
 
   return (
       
-    <div style={{backgroundColor:"peachpuff"}}><PrimarySearchAppBar></PrimarySearchAppBar>
+    <div className="background-color-for-all"><PrimarySearchAppBar></PrimarySearchAppBar>
     <div style={styles}>
         <h1>Larp Management</h1>
         <h2>Graphs of the Larps</h2>    

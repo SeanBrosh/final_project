@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import MenuAppBar from '../Tools/MenuAppBar';
 import bcrypt from 'bcryptjs';
 
+import '../Styles/global.css';
+
 
 export default function LoginPage() {
 
@@ -105,7 +107,8 @@ export default function LoginPage() {
 
 
   return (
-    <div style={{ backgroundColor: "peachpuff" }}>
+    
+    <div className="background-color-for-all">
       <MenuAppBar></MenuAppBar>
       <div style={styles}>
         <TextField style={{ margin: 10 }} color='success' id="email-input" label="Email" variant="standard" onChange={(e) => setEmail(e.target.value)} type="email" /><br />

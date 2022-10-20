@@ -15,6 +15,8 @@ import DatePicker from '@mui/lab/DatePicker';
 import {useNavigate } from 'react-router-dom';
 import CustomizedInputBase from './CustomizedInputBase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import '../Styles/global.css';
+import '../Styles/media-query.css'
 
 
 export default function MenuAppBar() {
@@ -60,7 +62,7 @@ const intputTakerTags = (event) => {
     disablePortal
     id="combo-box-demo"
     options={countriesFromDB}
-    sx={{ width: 300 }}
+    sx={{ minWidth: 300 }}
     value={country}
     onChange={(event, value) => setCountry(value)}
     renderInput={(params) => <TextField  {...params} label="Country" />}
@@ -122,19 +124,19 @@ const intputTakerTags = (event) => {
   
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <ThemeProvider theme={darkTheme}>
-      <AppBar position="static">
-        <Toolbar>
+    <div  className="advance-search-organizer">
+<div className="advance-search-organizer-two">
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <CustomizedInputBase country={country} tags={tags} hasFood={hasFood} hasSleep={hasSleep} paymentStartingRng={paymentRngStart} paymentEndingRng={paymentRngEnd} dateStart={date} dateEnd={dateEnd}/>
+          <CustomizedInputBase country={country} tags={tags} hasFood={hasFood} hasSleep={hasSleep} paymentStartingRng={paymentRngStart} paymentEndingRng={paymentRngEnd} dateStart={date} dateEnd={dateEnd} intputStyle={{p: '5px 50px', display: 'flex', alignItems: 'center', minWidth: 200 }}/>
           </Typography>
-          
-        <TextField id="payment-start-input" type="number" onChange={(e)=> setPaymentRngStart(e.target.value)}  label="Min Price"/><br></br>
-        <TextField id="payment-end-input"  type="number" onChange={(e)=> setPaymentRngEnd(e.target.value)}  label="Max Price"/><br></br>
+        <TextField id="payment-start-input" type="number" onChange={(e)=> setPaymentRngStart(e.target.value)}  label="Min Price"/>
+        <TextField id="payment-end-input"  type="number" onChange={(e)=> setPaymentRngEnd(e.target.value)}  label="Max Price"/>
         
         
+
+  
         <LocalizationProvider dateAdapter={AdapterDateFns}>
+    
   <DatePicker 
     label="Start Date"
     value={date}
@@ -142,10 +144,9 @@ const intputTakerTags = (event) => {
       setDate(e);
     }}
     renderInput={(params) => <TextField {...params} />}
-  /><br></br>
+  />
 </LocalizationProvider>
-<br></br>
-<br></br>
+
 <LocalizationProvider dateAdapter={AdapterDateFns}>
   <DatePicker 
     label="End Date"
@@ -154,9 +155,11 @@ const intputTakerTags = (event) => {
       setDateEnd(e);
     }}
     renderInput={(params) => <TextField {...params} />}
-  /><br></br>
+  />
 </LocalizationProvider>
-
+    
+</div>
+<div className="advance-search-organizer-two">
       <FormControl 
       display="flex"
   justifyContent="center"
@@ -176,7 +179,7 @@ const intputTakerTags = (event) => {
           <MenuItem value={"Political"}>Political</MenuItem>
           <MenuItem value={"Militant"}>Militant</MenuItem>
         </Select>
-      </FormControl> <br></br>
+      </FormControl> 
 
 
 
@@ -197,7 +200,7 @@ const intputTakerTags = (event) => {
           <MenuItem value={"Paid Food"}>Paid Food</MenuItem>
           <MenuItem value={"No Food"}>No Food</MenuItem>
         </Select>
-      </FormControl> <br></br>
+      </FormControl> 
 
       <FormControl 
       display="flex"
@@ -216,14 +219,9 @@ const intputTakerTags = (event) => {
           <MenuItem value={"Paid Lodging"}>Paid Lodging</MenuItem>
           <MenuItem value={"No Lodging"}>No Lodging</MenuItem>
         </Select>
-      </FormControl> <br></br>
+      </FormControl> 
       {fillCountryChoiceContent()}
-
-         
-
-        </Toolbar>
-      </AppBar>
-      </ThemeProvider>
-    </Box>
+      </div>
+      </div>
   );
 }

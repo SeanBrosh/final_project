@@ -3,6 +3,8 @@ import PrimarySearchAppBar from '../Tools/MenuAppBar';
 import MediaCard from '../Tools/MediaCard';
 import { useNavigate } from 'react-router-dom';
 
+import '../Styles/global.css';
+
 
 
 export default function LarpPageSearch() {
@@ -119,7 +121,7 @@ export default function LarpPageSearch() {
 
 
     return (
-        <div style={{ backgroundColor: "peachpuff" }}>    <PrimarySearchAppBar></PrimarySearchAppBar>
+        <div className="background-color-for-all">    <PrimarySearchAppBar></PrimarySearchAppBar>
             <div style={styles}>
                 <div>{addLarps()}</div>
             </div>

@@ -4,6 +4,8 @@ import AccountProfileContent from './AccountProfileContent';
 import MediaCard from '../Tools/MediaCard';
 import { useNavigate } from 'react-router-dom';
 
+import '../Styles/global.css';
+
 
 export default function AccountProfile() {
 
@@ -109,7 +111,7 @@ export default function AccountProfile() {
         
 
   return (
-    <div style={{backgroundColor:"peachpuff"}}>
+    <div className="background-color-for-all">
     <PrimarySearchAppBar></PrimarySearchAppBar>
     <div style={styles}>
       <h1>Account Profile Page</h1>

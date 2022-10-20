@@ -7,6 +7,8 @@ import {useNavigate } from 'react-router-dom';
 import PrimarySearchAppBar from '../Tools/MenuAppBar';
 import bcrypt from 'bcryptjs';
 
+import '../Styles/global.css';
+
 
 export default function RegistrationPage() {
 
@@ -176,7 +178,7 @@ const btnAddUser = () => {
 
 
   return (
-    <div style={{backgroundColor:"peachpuff"}}>
+    <div className="background-color-for-all">
         <PrimarySearchAppBar></PrimarySearchAppBar>
 
         <div style={styles}>

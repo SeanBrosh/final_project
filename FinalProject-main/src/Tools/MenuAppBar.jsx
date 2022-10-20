@@ -12,6 +12,8 @@ import CustomizedInputBase from './CustomizedInputBase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link, useLocation } from 'react-router-dom';
 
+import websiteLogo from '../images/headline-tur.png'
+
 
 export default function MenuAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -92,6 +94,9 @@ export default function MenuAppBar() {
     navigate('/larpadminmanagement')
     setAnchorEl(null);
   };
+
+
+
   const logoHanlder=() =>{
     navigate('/')
     setAnchorEl(null);
@@ -126,11 +131,11 @@ export default function MenuAppBar() {
             sx={{ mr: 2 }}
           >
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <img style={{height:60}} src={"https://res.cloudinary.com/teepublic/image/private/s--vYjKUv2C--/c_fit,g_north_west,h_840,w_840/co_5c5c5c,e_outline:40/co_5c5c5c,e_outline:inner_fill:1/co_ffffff,e_outline:40/co_ffffff,e_outline:inner_fill:1/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_jpg,h_630,q_90,w_630/v1533171393/production/designs/2967437_0.jpg"} alt="Logo" />
+          <img style={{height:20}} src={websiteLogo} alt="Logo" />
           </Typography>
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <CustomizedInputBase tags={null} hasFood={null} hasSleep={null} paymentStartingRng={null} paymentEndingRng={null} dateStart={null} dateEnd={null} country={null}/>
+          <CustomizedInputBase tags={null} hasFood={null} hasSleep={null} paymentStartingRng={null} paymentEndingRng={null} dateStart={null} dateEnd={null} country={null} intputStyle={{p: '5px 50px', display: 'flex', alignItems: 'center', width: 200 }}/>
           </Typography>
           {adminUser &&
           <IconButton onClick={handleAdminUserMover}
@@ -158,6 +163,7 @@ export default function MenuAppBar() {
         </Typography>
         </IconButton>
           }
+
           {larpCreatorPlus &&
           <IconButton onClick={handleLarpCreatorMover}
           size="large"

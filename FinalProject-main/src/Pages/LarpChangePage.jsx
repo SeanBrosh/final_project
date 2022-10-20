@@ -13,6 +13,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import '../Styles/global.css';
+
+
 export default function LarpBuilderPage() {
 const larpChoice = JSON.parse(localStorage.getItem('larpChoice'));
 const [larpID, setLarpID] = useState(null);
@@ -307,7 +310,7 @@ const btnLarpCreator = () => {
  
 
   return (
-    <div style={{backgroundColor:"peachpuff"}}>
+    <div className="background-color-for-all">
         <PrimarySearchAppBar></PrimarySearchAppBar>
         <div style={styles}>
         <h1>Change the field you wish to change!</h1>

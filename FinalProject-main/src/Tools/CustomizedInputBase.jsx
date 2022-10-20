@@ -7,9 +7,11 @@ import LarpSearchParameters from '../Classes/LarpSearchParameters';
 import {useNavigate } from 'react-router-dom';
 
 export default function CustomizedInputBase(props) {
-  let{tags,hasFood,hasSleep,paymentStartingRng,paymentEndingRng,dateStart,dateEnd ,country} = props
+  let{tags,hasFood,hasSleep,paymentStartingRng,paymentEndingRng,dateStart,dateEnd ,country,intputStyle} = props
     const [searchInput, setSearchInput] = React.useState(null);
     const navigate = useNavigate();
+
+ 
 
     const searchHandler=() =>{
       var formatedDate = null
@@ -46,8 +48,8 @@ export default function CustomizedInputBase(props) {
       };
   return (
     <Paper
-      component="form"
-      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 200 }}
+      
+      sx={intputStyle}
     >
       <InputBase onChange={(e)=> setSearchInput(e.target.value)}
         sx={{ ml: 1, flex: 1 }}

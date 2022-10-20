@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {useNavigate } from 'react-router-dom';
 
+import tempImage from '../images/photo placeholder 01.png'
+
 export default function MediaCard(props) {
   let{title,short_desc, date,dateEnd,hasSleep,hasFood,price,tags, country, takenImage} = props
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ export default function MediaCard(props) {
       <CardMedia
         component="img"
         height="300"
-        image={takenImage == "" ? "https://res.cloudinary.com/teepublic/image/private/s--vYjKUv2C--/c_fit,g_north_west,h_840,w_840/co_5c5c5c,e_outline:40/co_5c5c5c,e_outline:inner_fill:1/co_ffffff,e_outline:40/co_ffffff,e_outline:inner_fill:1/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_jpg,h_630,q_90,w_630/v1533171393/production/designs/2967437_0.jpg": takenImage}
+        image={takenImage == "" ? tempImage: takenImage}
         alt="larp image"
       />
       <CardContent>

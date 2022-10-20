@@ -8,6 +8,8 @@ import {useNavigate } from 'react-router-dom';
 import PrimarySearchAppBar from '../Tools/MenuAppBar';
 import bcrypt from 'bcryptjs';
 
+import '../Styles/global.css';
+
 
 
 export default function AccountChange() {
@@ -218,7 +220,7 @@ const styles = {
 
       
         return (
-          <div style={{backgroundColor:"peachpuff"}}>
+          <div className="background-color-for-all">
               <PrimarySearchAppBar></PrimarySearchAppBar>
               <div style={styles}>
               <h1>Change Your Account's Information</h1>

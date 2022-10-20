@@ -4,9 +4,11 @@ import AdvancedSearchBar from '../Tools/AdvancedSearchBar';
 import Carousel from 'react-material-ui-carousel'
 import CarouselItem from '../Tools/CarouselItem';
 import MediaCard from '../Tools/MediaCard';
+import WebFont from 'webfontloader';
 
+import logo from '../images/logosingle-TUR.png'
 
-
+import '../Styles/global.css';
 
 
 export default function HomePage() {
@@ -111,6 +113,13 @@ return array2return
 }
 
 
+useEffect(() => {
+  WebFont.load({
+    google: {
+      families: ['DM Serif Display']
+    }
+  });
+ }, []);
 
 const CarouselMaker =() => {
 
@@ -158,13 +167,16 @@ const CarouselMaker =() => {
     return <div><h1>There are no active larps at the moment.</h1></div>
   }
   let converetedToMedia 
-  if(orderedScoreOfLarps[0] !== undefined) //the if is there in case the loading fails - hence it'll give us a normal none-score carousel. Given filteredLarps should be in the same order as orderedScoreOfLarps - we can use that fact to extract the fitting score to the fitting larp, and show it, even if their in different arrays.
+  if(orderedScoreOfLarps!== undefined && orderedScoreOfLarps[0] !== undefined) //the if is there in case the loading fails - hence it'll give us a normal none-score carousel. Given filteredLarps should be in the same order as orderedScoreOfLarps - we can use that fact to extract the fitting score to the fitting larp, and show it, even if their in different arrays.
   {
-   converetedToMedia  =<Carousel>{filteredLarps.slice(0, 3).map( (item, i) => <CarouselItem key={i} title={filteredLarps[i].Title} score={orderedScoreOfLarps[i].Caculated_Score} short_desc={filteredLarps[i].Short_Description}/> )}</Carousel>
+   converetedToMedia  =<Carousel    
+
+   
+   >{filteredLarps.slice(0, 3).map( (item, i) => <CarouselItem key={i} title={filteredLarps[i].Title} score={orderedScoreOfLarps[i].Caculated_Score} short_desc={filteredLarps[i].Short_Description} img={filteredLarps[i].Larp_Images}/> )}</Carousel>
   }
   else
   {
-  converetedToMedia  =<Carousel>{filteredLarps.slice(0, 3).map( (item, i) => <CarouselItem key={i} title={filteredLarps[i].Title} short_desc={filteredLarps[i].Short_Description}/> )}</Carousel>
+  converetedToMedia  =<Carousel  >{filteredLarps.slice(0, 3).map( (item, i) => <CarouselItem key={i} title={filteredLarps[i].Title} short_desc={filteredLarps[i].Short_Description} img={filteredLarps[i].Larp_Images}/> )}</Carousel>
   }
 
   return converetedToMedia
@@ -227,21 +239,30 @@ const UpcomingLarpMaker =() => {
 
 
   
-  //let closestLarpsShow = closestlarps.map((closestlarps,index)=> <MediaCard key={index} title={closestlarps.title} short_desc={closestlarps.short_desc} date={closestlarps.date}/> )
+  
+  
   return (
 
     
-    <div style={{backgroundColor:"peachpuff"}}>
+    <div className="background-color-for-all">
       <PrimarySearchAppBar></PrimarySearchAppBar>
       <div style={styles} className="">
-        <h1>Looking for Larp</h1>
-        <br></br>
-        <h2>Top Larps!</h2>
-        {CarouselMaker()}
+       <img src={logo} alt={"Logo"} style={{width: '100%',  height:'100%', maxHeight:500,maxWidth:500, aspectRatio: 135 / 76,}}></img>
         <br></br>
        <AdvancedSearchBar></AdvancedSearchBar>
         <br></br>
-        <h2>Upcoming larps!</h2>
+        <br></br>
+        <br></br>
+        <br></br>
+        <div style={{width:"100%", height:"80vh"}}>
+        {CarouselMaker()}
+        </div>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <h1 className='upcoming-larps-title'>Upcoming LARPs!</h1>
         {UpcomingLarpMaker()}
         </div>
 

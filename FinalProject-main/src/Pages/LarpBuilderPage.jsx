@@ -13,6 +13,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import '../Styles/global.css';
+
 
 export default function LarpBuilderPage() {
 const [title, setTitle] = useState(null);
@@ -209,7 +211,7 @@ const btnLarpCreator = () => {
   }
 
   return (
-    <div style={{backgroundColor:"peachpuff"}}>
+    <div className="background-color-for-all">
         <PrimarySearchAppBar></PrimarySearchAppBar>
         <div style={styles}>
         <h1>Create Your Larp!</h1>

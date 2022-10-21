@@ -39,14 +39,16 @@ const [creator_id, setCreatorID] = useState("");
 const apiUrl = 'http://proj9.ruppin-tech.co.il/api/updatelarp';
 const apiUrlInfo = 'http://proj9.ruppin-tech.co.il/api/getlarpinfo/'+larpChoice;
 const apiUrlGetCountries = 'http://proj9.ruppin-tech.co.il/api/getallcountries';
-const validTitle = new RegExp('^[a-zA-Z0-9א-ת._ :$!%,"?()/-]{2,41}$');
-const validShortDesc = new RegExp('^[a-zA-Z0-9א-ת._ :$!%,()/"?-]{14,300}$');
-const validLongDesc = new RegExp('^[a-zA-Zא-ת._ :$!%,"()-?/]{39,3000}$');
-const validLlocation = new RegExp('^[a-zA-Z0-9א-ת._ :$!%(),"/?-]{2,41}$');
+const validTitle = new RegExp('^[a-zA-Z0-9א-ת._ :;&”“’–$!%,"?()/-]{2,41}$');
+const validShortDesc = new RegExp('^[a-zA-Z0-9א-ת._ \r\n”“’–&;$!%,()/":?-]{14,300}$');
+const validLongDesc = new RegExp('^[a-zA-Zא-ת._ \r\n”“’–&;:$!%,"()-?/]{39,3000}$');
+const validLlocation = new RegExp('^[a-zA-Z0-9א-ת._ :$–!%(),"/?-]{2,41}$');
 
 const navigate = useNavigate();
+
 const styles = {
-    border: '1px solid black', margin:100 , padding:30,backgroundColor:"white"}
+  margin:100 , padding:30,backgroundColor:"white"}
+
 
 const inputTakerShortDesc=(input)=>{
 
@@ -95,7 +97,7 @@ useEffect(() => {
 
 
 
-    fetch(apiUrlInfo, {
+    fetch(apiUrlInfo, { //grabing the larp info from what is already in the database - and do 'autofill' to the fields with it - that way you only need to change the stuff you desire.
         method: 'GET',
         headers: new Headers({
             'Content-type': 'application/json; charset=UTF-8',
@@ -127,7 +129,7 @@ useEffect(() => {
         setLarpID(result.Larp_ID)
         setCreatorName(result.User_Name)
 
-        const apiUrlCreatorInfo = 'http://proj9.ruppin-tech.co.il/api/getlarpinfo/'+creator_name;
+        const apiUrlCreatorInfo = 'http://proj9.ruppin-tech.co.il/api/getlarpinfo/'+creator_name; //way to get the creator's id - it is needed as part of the proc in the DB to update a larp.
         fetch(apiUrlCreatorInfo, {
           method: 'GET',
           headers: new Headers({
@@ -153,7 +155,7 @@ useEffect(() => {
   }, [])
 
 
-const fillCountryChoiceContent =() => {
+const fillCountryChoiceContent =() => { //country form creator 
 
 
   
@@ -177,7 +179,7 @@ sx={{ minWidth: 300 }}>
 useEffect(() => {
 
 
-  fetch(apiUrlGetCountries, {
+  fetch(apiUrlGetCountries, { //getting countries from DB
       method: 'GET',
       headers: new Headers({
           'Content-type': 'application/json; charset=UTF-8',
@@ -201,7 +203,7 @@ useEffect(() => {
 }, [])
 
 
-const btnLarpCreator = () => {
+const btnLarpCreator = () => { //similar to larp builder - only making an update in the end. The null check is in case someone is deleting the auto-fill, and trying to send a new, null option instead.
 
     if (title===null || short_desc===null || long_desc===null || link === null || date===null ||dateEnd===null|| payment===null || tags===""|| hasFood===""|| hasSleep==="" ||  location===null)
     {
@@ -256,7 +258,6 @@ const btnLarpCreator = () => {
    {
     setCountry(larpCountry)
    }
-
   const larpCreationDetails = {
     Larp_ID : larpID ,
     Title : title,
@@ -274,7 +275,7 @@ const btnLarpCreator = () => {
     Country : country,
     Location : location
   };
-  console.log(larpCreationDetails)
+  console.log(larpCreationDetails.long_desc)
   fetch(apiUrl, {
     method: 'PUT',
     body: JSON.stringify(larpCreationDetails),
@@ -295,7 +296,7 @@ const btnLarpCreator = () => {
       return;
 
     }
-    localStorage.setItem('larpChoice', JSON.stringify(title));
+    localStorage.setItem('larpChoice', JSON.stringify(title)); //my way to open the right larp page - same way i use the search method.
     alert("Larp Updated!")
     navigate('/larppage');
     console.log("fetch POST= ", result);
@@ -310,17 +311,13 @@ const btnLarpCreator = () => {
  
 
   return (
-    <div className="background-color-for-all">
+    <div className="background-color-for-all footer-color">
         <PrimarySearchAppBar></PrimarySearchAppBar>
         <div style={styles}>
-        <h1>Change the field you wish to change!</h1>
-        <TextField  value={title} id="title-input" style={{margin:30 , width: 300}} onChange={(e)=> setTitle(e.target.value)} helperText="Please enter your Larp's New Title"/><br></br>
+        <h1 className='upcoming-larps-title'>Change the LARP Information!</h1>
+        <TextField  value={title} id="title-input" style={{margin:30 , width: 300}} onChange={(e)=> setTitle(e.target.value)} helperText="Please enter your LARP's New Title"/><br></br>
 
-        <MultilineTextFields value={short_desc} helperText="Write down short description!" inputTaker={inputTakerShortDesc} ></MultilineTextFields><br></br>
-
-        <MultilineTextFields value={long_desc} helperText="Write down a longer description for the page itself!" inputTaker={inputTakerLongDesc} ></MultilineTextFields><br></br>
-
-        <TextField id="link-input" value={link} style={{margin:30}} onChange={(e)=> setLink(e.target.value)} helperText="Please enter a link to your larp's facebook / website!" /><br></br>
+        <TextField id="link-input" value={link} style={{margin:30}} onChange={(e)=> setLink(e.target.value)} helperText="Please enter a link to your LARP's Facebook / website!" /><br></br>
         <TextField id="payment-input" value={payment} style={{margin:30}} type="number" onChange={(e)=> setPayment(e.target.value)} helperText="Please enter the payment that is required to join the LARP." /><br></br>
         
         
@@ -406,16 +403,20 @@ const btnLarpCreator = () => {
           <MenuItem value={"Paid Lodging"}>Paid Lodging</MenuItem>
           <MenuItem value={"No Lodging"}>No Lodging</MenuItem>
         </Select>
-        <br></br>If you'll leave the Country field empty - it'll auto-fill the country that the Larp is already belongs to.
       </FormControl> <br></br>
       {fillCountryChoiceContent()}
       <br></br>
-    <TextField value={location} id="location-input" style={{margin:30 , width: 300}} onChange={(e)=> setLocation(e.target.value)} helperText="Please enter your Larp's Location" /><br></br>
-    <TextField  value={larpImage} id="image-input" style={{margin:30 , width: 500}} onChange={(e)=> setLarpImage(e.target.value)} helperText="Please enter the SRC of the larp image you wish to add!" /><br></br>
+    <TextField value={location} id="location-input" style={{margin:30 , width: 300}} onChange={(e)=> setLocation(e.target.value)} helperText="Please enter your LARP's Location" /><br></br>
+    <TextField  value={larpImage} id="image-input" style={{margin:30 , width: 500}} onChange={(e)=> setLarpImage(e.target.value)} helperText="Please enter the SRC of the LARP image you wish to add!" /><br></br>
 <br></br>
 
+
+        <MultilineTextFields givenRows={4}  value={short_desc} helperText="Write down short description!" inputTaker={inputTakerShortDesc} ></MultilineTextFields><br></br>
+
+        <MultilineTextFields givenRows={35}  value={long_desc} helperText="Write down a longer description for the page itself!" inputTaker={inputTakerLongDesc} ></MultilineTextFields><br></br>
+
 <Button onClick={btnLarpCreator} style={{margin:30}} variant="contained">
-    Update the Larp
+    Update the LARP
 </Button>
 </div>
     </div>

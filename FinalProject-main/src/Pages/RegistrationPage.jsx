@@ -31,7 +31,7 @@ const validName = new RegExp('^[a-zA-Z0-9._:$!%-].{2,20}$');
 
 
 const styles = {
-  border: '1px solid black', margin:100 , padding:30,backgroundColor:"white"}
+   margin:100 , padding:30,backgroundColor:"white"}
 
   const btnSetAnonymous = () => {
     setCountry('Anonymous')
@@ -178,7 +178,7 @@ const btnAddUser = () => {
 
 
   return (
-    <div className="background-color-for-all">
+    <div className="background-color-for-all footer-color">
         <PrimarySearchAppBar></PrimarySearchAppBar>
 
         <div style={styles}>

@@ -53,8 +53,8 @@ export default function CustomizedInputBase(props) {
     >
       <InputBase onChange={(e)=> setSearchInput(e.target.value)}
         sx={{ ml: 1, flex: 1 }}
-        placeholder="Search for Larp"
-        inputProps={{ 'aria-label': 'search for larp' }}
+        placeholder="Search for LARP"
+        inputProps={{ 'aria-label': 'search for LARP' }}
       />
       <IconButton onClick={searchHandler} type="submit" sx={{ p: '10px' }} aria-label="search">
         <SearchIcon />

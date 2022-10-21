@@ -2,27 +2,68 @@
 @media only screen and (max-width: 600px) {
     .advance-search-organizer{display: flex; justify-content:center ;flex-direction: column; }
     .advance-search-organizer-two{display: flex; justify-content: center; flex-direction: column;}
+    .carousel-container{height: 300px}
+    .normal-navbar-shower{display: none;}
+    .burger-navbar-shower{display: block;}
+    .menu-logo-controller{height: 70px;}
+    .menu-website-name-controller{height: 0.5px; width: 200px;}
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
     .advance-search-organizer{display: flex; justify-content:center ;flex-direction: column; }
     .advance-search-organizer-two{display: flex; justify-content: center; flex-direction: column;}
+    .carousel-container{height: 400px}
+    .normal-navbar-shower{display: none;}
+    .burger-navbar-shower{display: block;}
+    .menu-logo-controller{height: 50px;}
+.menu-website-name-controller{height: 0.5px; width: 200px;}
 }
 
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
+/* Second Breakpoint for Navbar */
+@media only screen and (min-width: 850px) {
     .advance-search-organizer{display: flex; justify-content:center ;flex-direction: column; }
     .advance-search-organizer-two{display: flex; justify-content: center; flex-direction: column;}
-
+    .carousel-container{height: 400px}
+    .normal-navbar-shower{display: none;}
+    .burger-navbar-shower{display: block;}
+    .menu-logo-controller{height: 50px;}
+    .menu-website-name-controller{height: 15px ;width: 100%;}
 }
 
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 1040px) {
+/* Medium devices (landscape tablets, 1000px and up) */
+@media only screen and (min-width: 1000px) {
+    .advance-search-organizer{display: flex; justify-content:center ;flex-direction: column; }
+    .advance-search-organizer-two{display: flex; justify-content: center; flex-direction: column;}
+    .carousel-container{height: 500px}
+    .normal-navbar-shower{display: none;}
+    .burger-navbar-shower{display: block;}
+    .menu-logo-controller{height: 90px;}
+    .menu-website-name-controller{height: 30px;width: 100%;}
+}
+
+/* Large devices (laptops/desktops, 1150px and up) */
+@media only screen and (min-width: 1150px) {
 
     .advance-search-organizer{display: flex; justify-content:center ;flex-direction: column; }
     .advance-search-organizer-two{display: flex; justify-content: center; flex-direction: row;}
+    .carousel-container{height: 600px}
+    .normal-navbar-shower{display: none;}
+    .burger-navbar-shower{display: block;}
+    .menu-logo-controller{height: 90px;}
+    .menu-website-name-controller{height: 30px;width: 100%;}
+}
 
+/* Unique Breakpoint for the Navbar */
+@media only screen and (min-width: 1470px) {
+
+    .advance-search-organizer{display: flex; justify-content:center ;flex-direction: column;}
+    .advance-search-organizer-two{display: flex; justify-content: center; flex-direction: row;}
+    .carousel-container{height: 600px;}
+    .normal-navbar-shower{display: block;}
+    .burger-navbar-shower{display: none;}
+    .menu-logo-controller{height: 90px;}
+    .menu-website-name-controller{height: 30px;width: 100%;}  
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -30,12 +71,20 @@
 
 .advance-search-organizer{display: flex; justify-content:center ;flex-direction: column;}
 .advance-search-organizer-two{display: flex; justify-content: center; flex-direction: row;}
-
+.carousel-container{height: 600px;}
+.normal-navbar-shower{display: block;}
+.burger-navbar-shower{display: none;}
+.menu-logo-controller{height: 90px;}
+.menu-website-name-controller{height: 30px;width: 100%;}
 }    
 
 /* Extra Extra large devices (larger laptops and desktops, 1500px and up) */
 @media only screen and (min-width: 1800px) {
 
     .advance-search-organizer{display: flex; justify-content:center ;flex-direction: row;}
-    
+    .carousel-container{height: 600px;}
+    .normal-navbar-shower{display: block;}
+    .burger-navbar-shower{display: none;}
+    .menu-logo-controller{height: 90px;}
+    .menu-website-name-controller{height: 30px;width: 100%;}
     }    

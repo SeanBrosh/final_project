@@ -9,6 +9,8 @@ import {useNavigate } from 'react-router-dom';
 
 import tempImage from '../images/photo placeholder 01.png'
 
+import '../Styles/global.css';
+
 export default function MediaCard(props) {
   let{title,short_desc, date,dateEnd,hasSleep,hasFood,price,tags, country, takenImage} = props
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ export default function MediaCard(props) {
 
   return (
     <div style={styles}>
-    <Card sx={{ maxWidth: 700 }}>
+    <Card >
       <CardMedia
         component="img"
         height="300"
@@ -34,7 +36,7 @@ export default function MediaCard(props) {
         <Typography gutterBottom variant="h5" component="div">
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography class="line-breaker-fix" variant="body2" color="text.secondary"> 
           {short_desc}
         </Typography>
         <Typography variant="body2" color="text.secondary">

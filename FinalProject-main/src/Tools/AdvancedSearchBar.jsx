@@ -15,6 +15,8 @@ import DatePicker from '@mui/lab/DatePicker';
 import {useNavigate } from 'react-router-dom';
 import CustomizedInputBase from './CustomizedInputBase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+
 import '../Styles/global.css';
 import '../Styles/media-query.css'
 
@@ -50,7 +52,7 @@ const intputTakerTags = (event) => {
   }
   
   
-  const fillCountryChoiceContent =() => {
+  const fillCountryChoiceContent =() => { //Loading countries from the DB - and using the inbuilt option to have them all show on a choice list.
   
   
     
@@ -124,7 +126,7 @@ const intputTakerTags = (event) => {
   
 
   return (
-    <div  className="advance-search-organizer">
+    <div  className="advance-search-organizer advance-search-container">
 <div className="advance-search-organizer-two">
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <CustomizedInputBase country={country} tags={tags} hasFood={hasFood} hasSleep={hasSleep} paymentStartingRng={paymentRngStart} paymentEndingRng={paymentRngEnd} dateStart={date} dateEnd={dateEnd} intputStyle={{p: '5px 50px', display: 'flex', alignItems: 'center', minWidth: 200 }}/>

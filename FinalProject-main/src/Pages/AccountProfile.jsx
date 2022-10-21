@@ -9,9 +9,7 @@ import '../Styles/global.css';
 
 export default function AccountProfile() {
 
-    const styles = {
-        border: '1px solid black', margin:100 , padding:30 ,backgroundColor:"white"}
-    
+
         const [larpsSearch, setLarpsSearch] = useState([]);
         const [favoriteList, setFavoriteList] = useState(null);
         const [areCreatedLarps, setAreCreatedLarps] = useState(false);
@@ -22,7 +20,7 @@ export default function AccountProfile() {
         
         useEffect(() => {
         
-          fetch(apiUrlRelevantFavorites, {
+          fetch(apiUrlRelevantFavorites, { //pulling all the larps that are favorited by the person.
             method: 'GET',
             headers: new Headers({
               'Content-type': 'application/json; charset=UTF-8',
@@ -75,7 +73,7 @@ export default function AccountProfile() {
         }, [])
         
         
-        const printFavorites =() => {
+        const printFavorites =() => { //making sure to grab only the larps that has the right titles.
         
         
           if(favoriteList !== null)
@@ -91,7 +89,7 @@ export default function AccountProfile() {
         
         }
 
-        const printCreatedLarps =() => {
+        const printCreatedLarps =() => { //grabbing only the larps who's creator is the same name of the person who is logged on.
         
         
 
@@ -111,14 +109,18 @@ export default function AccountProfile() {
         
 
   return (
-    <div className="background-color-for-all">
+    <div className="background-color-for- footer-color">
     <PrimarySearchAppBar></PrimarySearchAppBar>
-    <div style={styles}>
-      <h1>Account Profile Page</h1>
+    <div  className="general-container">
+    <div style={{textAlign:"left"}}>
+      <table  className="user-detail-cotainer" >
+      <h1 className='upcoming-larps-title'>Account Profile Page</h1>
       <AccountProfileContent email={currentUser.email} name={currentUser.name} rank={currentUser.rank}image={currentUser.user_image} country={currentUser.country}/><br></br>
-      {favoriteList=== null || favoriteList.length === 0 ?  "" :<h1>Favorite List:</h1>}
+      </table>
+      </div>
+      {favoriteList=== null || favoriteList.length === 0 ?  "" :<h1 className='upcoming-larps-title'>Favorite List:</h1>}
       {printFavorites()}
-     {areCreatedLarps === false ?  "" :<h1>Created Larp List:</h1> }
+     {areCreatedLarps === false ?  "" :<h1 className='upcoming-larps-title'>Created LARPs List:</h1> }
       {printCreatedLarps()}
       </div>
   </div>

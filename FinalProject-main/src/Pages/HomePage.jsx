@@ -6,7 +6,6 @@ import CarouselItem from '../Tools/CarouselItem';
 import MediaCard from '../Tools/MediaCard';
 import WebFont from 'webfontloader';
 
-import logo from '../images/logosingle-TUR.png'
 
 import '../Styles/global.css';
 
@@ -19,23 +18,7 @@ const apiUrlGetAllScore = 'http://proj9.ruppin-tech.co.il/api/getcaculatedscorei
 const currentUser = JSON.parse(sessionStorage.getItem('login'));
   const [allLarps, setAllLarps] = useState(null);
   const [allScore, setAllScore] = useState(null);
-  const styles = {
-    border: '1px solid black', margin:100, padding:30, backgroundColor:"white"}
 
-
-    const isBeforeTheDate =(theEarlierDate, theLaterDate) => { //a function to test out if the first date is before the second date
-      var earlierDateTransformer = new Date(theEarlierDate)//given some dates are formatted - we revert both to raw Date form.
-      var laterDateTransformer = new Date(theLaterDate)
-      if (laterDateTransformer.getFullYear() < earlierDateTransformer.getFullYear() || laterDateTransformer.getFullYear() == earlierDateTransformer.getFullYear() &&
-       laterDateTransformer.getMonth() < earlierDateTransformer.getMonth() || laterDateTransformer.getFullYear() == earlierDateTransformer.getFullYear() 
-       && laterDateTransformer.getMonth() == earlierDateTransformer.getMonth() && laterDateTransformer.getDate() < earlierDateTransformer.getDate()) 
-      {//We pretty much go with one by one - first check if the year is bigger, than month - than day. If one of those fail -
-          // it matters that the latter date is bigger.
-          return false;
-      }
-
-      return true;
-  }
 
 
 
@@ -244,19 +227,15 @@ const UpcomingLarpMaker =() => {
   return (
 
     
-    <div className="background-color-for-all">
+    <div className="background-color-for-all footer-color">
       <PrimarySearchAppBar></PrimarySearchAppBar>
-      <div style={styles} className="">
-       <img src={logo} alt={"Logo"} style={{width: '100%',  height:'100%', maxHeight:500,maxWidth:500, aspectRatio: 135 / 76,}}></img>
-        <br></br>
+      <div  className="general-container">
        <AdvancedSearchBar></AdvancedSearchBar>
         <br></br>
         <br></br>
         <br></br>
         <br></br>
-        <div style={{width:"100%", height:"80vh"}}>
         {CarouselMaker()}
-        </div>
         <br></br>
         <br></br>
         <br></br>

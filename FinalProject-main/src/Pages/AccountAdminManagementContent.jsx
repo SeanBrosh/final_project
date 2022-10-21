@@ -21,7 +21,7 @@ export default function AccountAdminManagementContent(props) {
             setRanks(event.target.value);
           }
 
-    const btnDeleteUser = () => {
+    const btnDeleteUser = () => { //the user deletion process.
         const userDeleteDetails = {
           User_ID: props.id
         };
@@ -56,7 +56,7 @@ export default function AccountAdminManagementContent(props) {
     
 
       const btnChangeRank = () => {
-          if(ranks===null)
+          if(ranks===null) //a button to easily change a user's rank - without needing to go into the user edit page - for easy promotion, demotion, or ban.
           {
               alert("You must choose the wanted rank change before pressing change!")
               return
@@ -94,7 +94,7 @@ export default function AccountAdminManagementContent(props) {
     
       }
 
-    const NavToUserChange = () => {
+    const NavToUserChange = () => { //to edit a different user - we simply use a specific local storage object, and by the way the user info change page works - they know if the person who enters it is an admit who changes another user's info - or a user changing his own
       localStorage.setItem('userChoice', JSON.stringify(name)); 
       navigate('/accountchange')
     }

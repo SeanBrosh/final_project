@@ -18,7 +18,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   const styles = {
-    border: '1px solid black', margin: 100, padding: 30, backgroundColor: "white"
+     margin: 100, padding: 30, backgroundColor: "white"
   }
 
 
@@ -101,6 +101,8 @@ export default function LoginPage() {
       
   }
 
+
+
   const btnRegister = () => {
     navigate('/registration');
   }
@@ -108,7 +110,7 @@ export default function LoginPage() {
 
   return (
     
-    <div className="background-color-for-all">
+    <div className="background-color-for-all footer-color">
       <MenuAppBar></MenuAppBar>
       <div style={styles}>
         <TextField style={{ margin: 10 }} color='success' id="email-input" label="Email" variant="standard" onChange={(e) => setEmail(e.target.value)} type="email" /><br />

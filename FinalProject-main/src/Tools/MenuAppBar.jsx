@@ -12,7 +12,11 @@ import CustomizedInputBase from './CustomizedInputBase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link, useLocation } from 'react-router-dom';
 
-import websiteLogo from '../images/headline-tur.png'
+import websiteLogo from '../images/logosingle-ORG.png'
+import websiteName from '../images/headline-org.png'
+
+import '../Styles/global.css';
+import '../Styles/media-query.css'
 
 
 export default function MenuAppBar() {
@@ -108,7 +112,6 @@ export default function MenuAppBar() {
   };
 
 
-  
   const darkTheme = createTheme({
     palette: {
       mode: 'dark',
@@ -119,9 +122,10 @@ export default function MenuAppBar() {
   });
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <React.Fragment>
+    <Box sx={{ flexGrow: 1 }} >
       <ThemeProvider theme={darkTheme}>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           <IconButton onClick={logoHanlder}
             size="large"
@@ -131,12 +135,24 @@ export default function MenuAppBar() {
             sx={{ mr: 2 }}
           >
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <img style={{height:20}} src={websiteLogo} alt="Logo" />
+          <img className='menu-logo-controller' src={websiteLogo} alt="Logo" />
+          </Typography>
+          </IconButton>
+          <IconButton onClick={logoHanlder}
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <img className='menu-website-name-controller' style={{height:30}} src={websiteName} alt="Logo" />
           </Typography>
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <CustomizedInputBase tags={null} hasFood={null} hasSleep={null} paymentStartingRng={null} paymentEndingRng={null} dateStart={null} dateEnd={null} country={null} intputStyle={{p: '5px 50px', display: 'flex', alignItems: 'center', width: 200 }}/>
           </Typography>
+          <div className='normal-navbar-shower'>
           {adminUser &&
           <IconButton onClick={handleAdminUserMover}
           size="large"
@@ -159,7 +175,7 @@ export default function MenuAppBar() {
           sx={{ mr: 2 }}
         >
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Larp Table Management
+          LARP Table Management
         </Typography>
         </IconButton>
           }
@@ -173,10 +189,15 @@ export default function MenuAppBar() {
           sx={{ mr: 2 }}
         >
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Create a Larp!
+          Create a LARP!
         </Typography>
         </IconButton>
           }
+          
+          </div>
+          <div className='burger-navbar-shower'>
+
+          </div>
           {session? 
           <div>
             <div>
@@ -207,7 +228,18 @@ export default function MenuAppBar() {
           >
             <MenuItem onClick={handleAccountProfileMover}>Profile</MenuItem>
             <MenuItem onClick={handleAccountChangeMover}>Change Account Settings</MenuItem>
+            <div className='burger-navbar-shower'>
+              {adminUser &&
+            <MenuItem onClick={handleAdminUserMover}>User Management</MenuItem>
+              }
+              {adminUser &&
+              <MenuItem onClick={handleAdminLarpMover}>LARP Table Management</MenuItem>
+              }
+            {larpCreatorPlus && 
+            <MenuItem onClick={handleLarpCreatorMover}>Create a LARP!</MenuItem>}
+            </div>
             <MenuItem onClick={handleLogOutButton}>Log Off</MenuItem>
+
           </Menu>
           </div>
         </div> :     <IconButton onClick={loginHandler}
@@ -225,7 +257,9 @@ export default function MenuAppBar() {
 
         </Toolbar>
       </AppBar>
+      
       </ThemeProvider>
     </Box>
+     </React.Fragment>
   );
 }

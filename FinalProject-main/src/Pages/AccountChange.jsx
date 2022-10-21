@@ -14,7 +14,7 @@ import '../Styles/global.css';
 
 export default function AccountChange() {
 
-const adminUserChanger = JSON.parse(localStorage.getItem('userChoice'));
+const adminUserChanger = JSON.parse(localStorage.getItem('userChoice')); //checking if it's an admit who is changing another persons' information, or not.
 const currentUser = JSON.parse(sessionStorage.getItem('login'));
 const [id, setID] = useState(currentUser.user_id);
 const [email, setEmail] = useState(currentUser.email);
@@ -34,7 +34,7 @@ const apiUrl = 'http://proj9.ruppin-tech.co.il/api/updateuser';
 const apiUrlGetCountries = 'http://proj9.ruppin-tech.co.il/api/getallcountries';
 
 const styles = {
-    border: '1px solid black', margin:100 , padding:30 ,backgroundColor:"white"}
+     margin:100 , padding:30 ,backgroundColor:"white"}
 
 
     const btnSetAnonymous = () => {
@@ -75,7 +75,7 @@ const styles = {
   
     useEffect(() => {
 
-      if(adminUserChanger !== null)
+      if(adminUserChanger !== null) //if it is an admin changing another person's information - we pull the user id we sent via the local storage of the 1 we want to change.
       {
         const apiChosenUserInformation = "http://proj9.ruppin-tech.co.il/api/getuserinfo/"+ adminUserChanger
         fetch(apiChosenUserInformation, {
@@ -92,7 +92,7 @@ const styles = {
           else {
               return null;
           }
-      }).then((result) => {
+      }).then((result) => { //doing 'defulte' fill - that way, we can only change small details, and not needing to re-write stuff from the start, or simply not needing to touch the fields we do not want.
            setID(result.User_ID)
            setName(result.User_Name)
            setEmail(result.Email)
@@ -103,7 +103,7 @@ const styles = {
       )
       }
 
-      fetch(apiUrlGetCountries, {
+      fetch(apiUrlGetCountries, { //getting country list from db
           method: 'GET',
           headers: new Headers({
               'Content-type': 'application/json; charset=UTF-8',
@@ -130,7 +130,7 @@ const styles = {
     useEffect(() => {
     
   
-      if (country === 'Anonymous')
+      if (country === 'Anonymous') 
       { 
         setAnonButton(<div><Button style={{margin:30}} color="error" variant="contained" disabled >Marked as Anonymous</Button><br></br></div>)
         return
@@ -142,7 +142,7 @@ const styles = {
     }, [country])
   
 
- const btnChangeInformation = () => {
+ const btnChangeInformation = () => { //similar process to register - only instead we update an existing account. The input tests are the same, though, minus if name or email are takened or not.
      
         if (email === null || name === null)
         {
@@ -220,10 +220,10 @@ const styles = {
 
       
         return (
-          <div className="background-color-for-all">
+          <div className="background-color-for-all footer-color">
               <PrimarySearchAppBar></PrimarySearchAppBar>
               <div style={styles}>
-              <h1>Change Your Account's Information</h1>
+              <h1 className='upcoming-larps-title'>Change Your Account's Information</h1>
               <TextField style={{margin:10}} value={email} color='success' id="email-input" helperText="New Email" variant="standard" onChange={(e)=> setEmail(e.target.value)} type="email"/><br/>
               <h3>Please write the new password you wish to add. If the field will remain empty - the old password will remain.</h3>
               <TextField style={{margin:10}} color='success' id="password-input" helperText="New Password" variant="standard" onChange={(e)=> setPass(e.target.value)} type="password"/><br/>

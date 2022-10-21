@@ -10,7 +10,8 @@ export default function LarpAdminManagementContent(props) {
         border: '1px solid black', margin:50 , padding:30}
     const navigate = useNavigate();
       
-    const btnDeleteUser = () => {
+    const btnDeleteLarp = () => { //function to the delete the larp
+      console.log(larpSingle.Larp_ID)
       const larpDeleteDetails = {
         Larp_ID: larpSingle.Larp_ID,
       };
@@ -43,7 +44,7 @@ export default function LarpAdminManagementContent(props) {
   
     }
 
-    const NavToLarpEdit =() => {
+    const NavToLarpEdit =() => { //we made our larp change similar to user change - using local storage, this time with the title(titles being unique) to know which larp we need to change.
       localStorage.setItem('larpChoice', JSON.stringify(larpSingle.Title));
       navigate('/larpchangepage');
     
@@ -54,8 +55,8 @@ export default function LarpAdminManagementContent(props) {
      
   return (
     <div style={styles}><MediaCard title={larpSingle.Title} short_desc={larpSingle.Short_Description} takenImage={larpSingle.Larp_Images} date={larpSingle.LarpDate.slice(0,10)} dateEnd={larpSingle.LarpDateEnd.slice(0,10)}/> 
-    <Button style={{margin:30}} color="error" variant="contained" onClick={btnDeleteUser}>Delete</Button><br/>
-    <Button style={{margin:30}} variant="contained" onClick={NavToLarpEdit}> Edit Larp Information</Button><br/>
+    <Button style={{margin:30}} color="error" variant="contained" onClick={btnDeleteLarp}>Delete</Button><br/>
+    <Button style={{margin:30}} variant="contained" onClick={NavToLarpEdit}> Edit LARP Information</Button><br/>
     </div>
   )
 }

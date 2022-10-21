@@ -14,12 +14,9 @@ const navigate = useNavigate();
 const apiUrl = 'http://proj9.ruppin-tech.co.il/api/getlarpinfoall';
 const [chartFiller, setChartFiller] = useState(null);
 const [larpsSearch, setLarpsSearch] = useState([]);
-    const styles = {
-        border: '1px solid black', margin:100 , padding:30 ,backgroundColor:"white"}
-
 
         
-        const btnShowLodgingPieChart = () => {
+        const btnShowLodgingPieChart = () => { //function to create the lodging chart - going over all the larps, and counting the length of every array that contains each of the options (using filter)
             if(larpsSearch === null)
             {
                 return <div>There are no Larps in the DB!</div>
@@ -57,7 +54,7 @@ const [larpsSearch, setLarpsSearch] = useState([]);
             {
                 return <div>There are no Larps in the DB!</div>
             }
-
+                //very similar to the lodging function
 
             let tagSciFiFromLarp = larpsSearch.filter(item => item.Tag_Description === 'Sci-Fi');
             let tagSciFiCount = tagSciFiFromLarp.length
@@ -97,7 +94,7 @@ const [larpsSearch, setLarpsSearch] = useState([]);
             {
                 return <div>There are no Larps in the DB!</div>
             }
-
+              //very similar to the lodging function
 
             let noFoodFromLarp = larpsSearch.filter(item => item.HasFood_Description === 'No Food');
             let noFoodCount = noFoodFromLarp.length
@@ -125,7 +122,7 @@ const [larpsSearch, setLarpsSearch] = useState([]);
         }
 
         const btnShowLarpCommonPriceHistogram = () => {
-
+            //somewhat similar to the rest - we do the different price ranges we are interested in (given the normal larp prices from external knowledge). Than we count each of them - and using the inbuilt props, it organizes the length of every array.
           let underTen = larpsSearch.filter(item => item.Payment <10);
           let underFifteen = larpsSearch.filter(item => item.Payment >= 10 && item.Payment < 15);
           let underTwenty = larpsSearch.filter(item => item.Payment >= 15 && item.Payment < 20);
@@ -152,7 +149,7 @@ const [larpsSearch, setLarpsSearch] = useState([]);
     useEffect(() => {
 
 
-      fetch(apiUrl, {
+      fetch(apiUrl, { //getting the larps
           method: 'GET',
           headers: new Headers({
               'Content-type': 'application/json; charset=UTF-8',
@@ -175,13 +172,13 @@ const [larpsSearch, setLarpsSearch] = useState([]);
 
   const addLarps =() => {
 
-      if (larpsSearch == null) {
+      if (larpsSearch == null) { //creating the larp list
           navigate('/');
           return;
       }
 
 
-          let temp = larpsSearch.map((larps,index)=> {if(larps.name!=="Admin") return<LarpAdminManagementContent key={index} larpSingle={larps}/> })
+          let temp = larpsSearch.map((larps,index)=> {return<LarpAdminManagementContent key={index} larpSingle={larps}/> })
           return temp
 
 
@@ -192,16 +189,16 @@ const [larpsSearch, setLarpsSearch] = useState([]);
 
   return (
       
-    <div className="background-color-for-all"><PrimarySearchAppBar></PrimarySearchAppBar>
-    <div style={styles}>
-        <h1>Larp Management</h1>
-        <h2>Graphs of the Larps</h2>    
+    <div className="background-color-for-all footer-color"><PrimarySearchAppBar></PrimarySearchAppBar>
+    <div className="general-container">
+        <h1 className='upcoming-larps-title'>LARP Management</h1>
+        <h2 className='upcoming-larps-title'>LARPs Graph</h2>    
     <Button style={{margin:30}} variant="contained" onClick={btnShowLodgingPieChart} >Most Common Lodging Option</Button>
     <Button style={{margin:30}} variant="contained" onClick={btnShowFoodPieChart}>Most Common Food Option</Button>
     <Button style={{margin:30}} variant="contained" onClick={btnShowLarpThemePieChart}>Most Common Larp Theme</Button>
     <Button style={{margin:30}} variant="contained" onClick={btnShowLarpCommonPriceHistogram} >how most common price ranges Histogram</Button>
     {chartFiller === null? "" : chartFiller}
-    <h2>Managing the different Larps</h2>   
+    <h2 className='upcoming-larps-title'>LARPs Table</h2>   
         {addLarps()}
         </div>
     </div>

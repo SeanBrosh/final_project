@@ -9,12 +9,11 @@ import '../Styles/global.css';
 
 export default function AccountAdminManagement() {
 
-    const styles = {
-        border: '1px solid black', margin:100 , padding:30 ,backgroundColor:"white"}
+
         const [usersTable, setUsersTable] = useState(null);
         const navigate = useNavigate();
         const apiUrl = 'http://proj9.ruppin-tech.co.il/api/getuserinfoall';
-        useEffect(() => {
+        useEffect(() => { //pulling all user information
 
 
           fetch(apiUrl, {
@@ -40,7 +39,7 @@ export default function AccountAdminManagement() {
     
       const userTableMaker =() => {
     
-          if (usersTable == null) {
+          if (usersTable == null) { //showing all the accounts that are not on 'admin' rank - just in case somehow , someone reaches this page, he wont be able to delete the admin account etc.
               navigate('/');
               return;
           }
@@ -58,9 +57,9 @@ export default function AccountAdminManagement() {
 
   return (
       
-    <div className="background-color-for-all"><PrimarySearchAppBar></PrimarySearchAppBar>
-    <div style={styles}>
-        <h1>User Management</h1>
+    <div className="background-color-for-all footer-color"><PrimarySearchAppBar></PrimarySearchAppBar>
+    <div className="general-container">
+        <h1 className='upcoming-larps-title'>User Management</h1>
         {userTableMaker()}
         </div>
     </div>

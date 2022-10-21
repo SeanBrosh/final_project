@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 export default function MultilineTextFields(props) {
-  let{labelFill,  inputTaker, value, helperText} = props
+  let{labelFill,  inputTaker, value, helperText, givenRows} = props
 
 
   return (
@@ -17,13 +17,13 @@ export default function MultilineTextFields(props) {
       autoComplete="off"
     >
       <div>
-        <TextField
+        <TextField style ={{width: '80%'}}
         value={value}
           id="outlined-multiline-static"
           label={labelFill}
           helperText={helperText}
           multiline
-          rows={4}
+          rows={givenRows}
         />
       </div>
     </Box>

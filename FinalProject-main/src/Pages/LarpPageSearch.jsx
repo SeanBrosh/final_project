@@ -13,9 +13,6 @@ export default function LarpPageSearch() {
     const [larpsSearch, setLarpsSearch] = useState([]);
     const apiUrl = 'http://proj9.ruppin-tech.co.il/api/getlarpinfoall';
     const navigate = useNavigate();
-    const styles = {
-        border: '1px solid black', margin: 100, padding: 30, backgroundColor: "white"
-    }
 
     let searchInput = JSON.parse(localStorage.getItem('LarpSearchParameters'));//pulling the 'LarpSearchParameters' - which is in fact the parameters that were written in a different page. 
                                                                             //Using localStorage to keep them in pull-able distance.
@@ -121,8 +118,8 @@ export default function LarpPageSearch() {
 
 
     return (
-        <div className="background-color-for-all">    <PrimarySearchAppBar></PrimarySearchAppBar>
-            <div style={styles}>
+        <div className="background-color-for-all footer-color">    <PrimarySearchAppBar></PrimarySearchAppBar>
+            <div className="general-container">
                 <div>{addLarps()}</div>
             </div>
         </div>

@@ -34,14 +34,14 @@ const [larpImage, setLarpImage] = useState("");
 const [creator_name, setCreatorName] = useState( JSON.parse(sessionStorage.getItem('login')).user_id);
 const apiUrl = 'http://proj9.ruppin-tech.co.il/api/addlarp';
 const apiUrlGetCountries = 'http://proj9.ruppin-tech.co.il/api/getallcountries';
-const validTitle = new RegExp('^[a-zA-Z0-9א-ת._ :$!%,"?()/-]{2,41}$');
-const validShortDesc = new RegExp('^[a-zA-Z0-9א-ת._ :$!%,()/"?-]{14,300}$');
-const validLongDesc = new RegExp('^[a-zA-Zא-ת._ :$!%,"()-?/]{39,3000}$');
-const validLlocation = new RegExp('^[a-zA-Z0-9א-ת._ :$!%(),"/?-]{2,41}$');
+const validTitle = new RegExp('^[a-zA-Z0-9א-ת._ &;:$!%,”“’–"?()/-]{2,41}$');
+const validShortDesc = new RegExp('^[a-zA-Z0-9א-ת._ \r\n”“’–;&:$!%,()/"?-]{14,300}$');
+const validLongDesc = new RegExp('^[a-zA-Zא-ת._ \r\n”“’–;&:$!%,"()-?/]{39,3000}$');
+const validLlocation = new RegExp('^[a-zA-Z0-9א-ת._ :$–!%(),"/?-]{2,41}$');
 
 const navigate = useNavigate();
 const styles = {
-    border: '1px solid black', margin:100 , padding:30,backgroundColor:"white"}
+     margin:100 , padding:30,backgroundColor:"white"}
 
 const inputTakerShortDesc=(input)=>{
 
@@ -68,7 +68,7 @@ const intputTakerHasSleep = (event) => {
 }
 
 
-const fillCountryChoiceContent =() => {
+const fillCountryChoiceContent =() => { //country field filler 
 
 
   
@@ -92,7 +92,7 @@ sx={{ minWidth: 300 }}>
 useEffect(() => {
 
 
-  fetch(apiUrlGetCountries, {
+  fetch(apiUrlGetCountries, { //getting all the countries from the DB to fill the countries option.
       method: 'GET',
       headers: new Headers({
           'Content-type': 'application/json; charset=UTF-8',
@@ -113,7 +113,7 @@ useEffect(() => {
 }, [])
 
 
-const btnLarpCreator = () => {
+const btnLarpCreator = () => { //creating a new larp - making sure all the none-skipable fields are not null (giving error where it's relevant) with the usage of regex aswell.
     if (title===null || short_desc===null || long_desc===null || link === null || date===null ||dateEnd===null|| payment===null || tags===""|| hasFood===""|| hasSleep==="" || country===null || location===null)
     {
         alert("Please fill all the fields. Take note that the Larp Image field is optional.")
@@ -145,7 +145,7 @@ const btnLarpCreator = () => {
       alert("Please write the location in the length between 3 to 40 characters.")
       return
     }
-    var currentdate = new Date();
+    var currentdate = new Date(); //current date. Checking if the starting date is not same as current date (I want at least 1 day ahead - design choice) - and that the 'end' date will be at least either same as starting date - or later.
     if (date.getFullYear() < currentdate.getFullYear() || date.getFullYear() == currentdate.getFullYear() && date.getMonth() < currentdate.getMonth() || date.getFullYear() == currentdate.getFullYear() && date.getMonth() == currentdate.getMonth() && date.getDate() <= currentdate.getDate()) 
         {
             alert("Bad Start date! You can only advert dates that are starting from tomorrow onwards.")
@@ -159,7 +159,7 @@ const btnLarpCreator = () => {
 
     var formatedDate =(date.getMonth()+1).toString()+ "/" + date.getDate().toString() +"/"+ date.getFullYear().toString()
     var formatedDateEnd =(dateEnd.getMonth()+1).toString()+ "/" + dateEnd.getDate().toString() +"/"+ dateEnd.getFullYear().toString()
-    
+    //putting the dates in a formated manner - as it's how it is kept in the DB.
     localStorage.setItem('larpChoice', JSON.stringify(title));
 
    
@@ -182,7 +182,7 @@ const btnLarpCreator = () => {
   };
   fetch(apiUrl, {
     method: 'PUT',
-    body: JSON.stringify(larpCreationDetails),
+    body: JSON.stringify(larpCreationDetails), //sending in the new formed larp to the DB.
     headers: new Headers({
       'Content-type': 'application/json; charset=UTF-8',
       'Accept': 'application/json; charset=UTF-8'
@@ -211,17 +211,14 @@ const btnLarpCreator = () => {
   }
 
   return (
-    <div className="background-color-for-all">
+    <div className="background-color-for-all footer-color">
         <PrimarySearchAppBar></PrimarySearchAppBar>
         <div style={styles}>
-        <h1>Create Your Larp!</h1>
-        <TextField id="title-input" style={{margin:30 , width: 300}} onChange={(e)=> setTitle(e.target.value)} helperText="Please enter your Larp's Title"  label="Title"/><br></br>
+        <h1 className='upcoming-larps-title'>Create Your LARP!</h1>
+        <TextField id="title-input" style={{margin:30 , width: 300}} onChange={(e)=> setTitle(e.target.value)} helperText="Please enter your LARP's Title"  label="Title"/><br></br>
 
-        <MultilineTextFields labelFill="Write down short description!" inputTaker={inputTakerShortDesc} ></MultilineTextFields><br></br>
-
-        <MultilineTextFields labelFill="Write down a longer description for the page itself!" inputTaker={inputTakerLongDesc} ></MultilineTextFields><br></br>
-
-        <TextField id="link-input" style={{margin:30}} onChange={(e)=> setLink(e.target.value)} helperText="Please enter a link to your larp's facebook / website!" label="Link"/><br></br>
+        
+        <TextField id="link-input" style={{margin:30}} onChange={(e)=> setLink(e.target.value)} helperText="Please enter a link to your LARP's facebook / website!" label="Link"/><br></br>
         <TextField id="payment-input" style={{margin:30}} type="number" onChange={(e)=> setPayment(e.target.value)} helperText="Please enter the payment that is required to join the LARP." label="Payment"/><br></br>
         
         
@@ -310,13 +307,18 @@ const btnLarpCreator = () => {
       </FormControl> <br></br>
       {fillCountryChoiceContent()}
       <br></br>
-      <TextField id="location-input" style={{margin:30 , width: 300}} onChange={(e)=> setLocation(e.target.value)} helperText="Please enter your Larp's Location"  label="Location"/><br></br>
+      <TextField id="location-input" style={{margin:30 , width: 300}} onChange={(e)=> setLocation(e.target.value)} helperText="Please enter your LARP's Location"  label="Location"/><br></br>
 
-    <TextField id="image-input" style={{margin:30 , width: 500}} onChange={(e)=> setLarpImage(e.target.value)} helperText="Please enter the SRC of the larp image you wish to add!" label="Larp Image"/><br></br>
+    <TextField id="image-input" style={{margin:30 , width: 500}} onChange={(e)=> setLarpImage(e.target.value)} helperText="Please enter the SRC of the LARP image you wish to add!" label="LARP Image"/><br></br>
 <br></br>
 
+
+        <MultilineTextFields givenRows={4}  labelFill="Write down short description!" inputTaker={inputTakerShortDesc} ></MultilineTextFields><br></br>
+
+        <MultilineTextFields givenRows={35} labelFill="Write down a longer description for the page itself!" inputTaker={inputTakerLongDesc} ></MultilineTextFields><br></br>
+
 <Button onClick={btnLarpCreator} style={{margin:30}} variant="contained">
-    Create the Larp
+    Create the LARP
 </Button>
 </div>
     </div>
